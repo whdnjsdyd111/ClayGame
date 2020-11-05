@@ -20,8 +20,6 @@ public class SingleGamePane extends JLayeredPane implements MouseShape {
 		setLayout(null);
 		this.frame = frame;
 		
-		setLayout(null);
-		
 		setMouseShape(this);
 		
 		JLabel game_title = new JLabel("클레어 사격 게임");		// 게임 타이틀 라벨
@@ -64,7 +62,7 @@ public class SingleGamePane extends JLayeredPane implements MouseShape {
 		infinity.setFont(new Font("휴먼옛체", Font.BOLD, 35));
 		add(infinity);
 		
-		JLabel time = new LabelBtn(485, 250, "시간 모드", new MouseListener() {
+		JLabel time = new LabelBtn(485, 250, "시간 제한 모드", new MouseListener() {
 			
 			@Override
 			public void mouseReleased(MouseEvent e) {
@@ -93,8 +91,11 @@ public class SingleGamePane extends JLayeredPane implements MouseShape {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				frame.card.show(frame.getContentPane(), "time");
+				frame.time.startGrame();
 			}
 		});
+		time.setSize(300, 100);
+		time.setLocation(450, 250);
 		time.setFont(new Font("휴먼옛체", Font.BOLD, 35));
 		add(time);
 		

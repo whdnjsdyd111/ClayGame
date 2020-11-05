@@ -27,6 +27,7 @@ public interface MouseShape {
 		JLabel label = new JLabel(icon);
 		label.setSize(100, 100);
 		
+		cont.add(label);
 		cont.addMouseListener(new MouseListener() {
 			
 			@Override
@@ -43,12 +44,12 @@ public interface MouseShape {
 			
 			@Override
 			public void mouseExited(MouseEvent e) {
-				cont.remove(label);
+
 			}
 			
 			@Override
 			public void mouseEntered(MouseEvent e) {
-				cont.add(label);
+
 			}
 			
 			@Override

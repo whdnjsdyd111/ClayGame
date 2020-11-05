@@ -13,6 +13,7 @@ public class InfinityMode extends JLayeredPane {
 	
 	public InfinityMode(MainFrame frame) {
 		this.frame = frame;
+		setLayout(null);
 		
 		JLabel game_title = new JLabel("무한모드");		// 게임 타이틀 라벨
 		game_title.setBounds(450, 100, 300, 50);
