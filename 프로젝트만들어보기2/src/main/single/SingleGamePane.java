@@ -1,6 +1,5 @@
 package main.single;
 
-import java.awt.Component;
 import java.awt.Font;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -19,8 +18,6 @@ public class SingleGamePane extends JLayeredPane implements MouseShape {
 	public SingleGamePane(MainFrame frame) {
 		setLayout(null);
 		this.frame = frame;
-		
-		setMouseShape(this);
 		
 		JLabel game_title = new JLabel("클레어 사격 게임");		// 게임 타이틀 라벨
 		game_title.setBounds(450, 100, 300, 50);
@@ -56,6 +53,7 @@ public class SingleGamePane extends JLayeredPane implements MouseShape {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				frame.card.show(frame.getContentPane(), "infinity");
+				frame.infinityMode.startGame();
 			}
 		});
 		infinity.setBounds(125, 250, 250, 100);
@@ -91,7 +89,7 @@ public class SingleGamePane extends JLayeredPane implements MouseShape {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				frame.card.show(frame.getContentPane(), "time");
-				frame.time.startGrame();
+				frame.time.startGame();
 			}
 		});
 		time.setSize(300, 100);
@@ -128,6 +126,7 @@ public class SingleGamePane extends JLayeredPane implements MouseShape {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				frame.card.show(frame.getContentPane(), "reload");
+				frame.reload.startGame();
 			}
 		});
 		reload.setFont(new Font("휴먼옛체", Font.BOLD, 35));
