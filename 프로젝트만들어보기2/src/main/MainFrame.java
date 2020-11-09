@@ -12,6 +12,7 @@ import javax.swing.JFrame;
 import main.databases.SingleDatabaseDialog;
 import main.mainPane.MainPane;
 import main.multi.MultiGamePane;
+import main.multi.MultiLoginPane;
 import main.resource.Audios;
 import main.single.InfinityMode;
 import main.single.ReloadMode;
@@ -24,11 +25,11 @@ public class MainFrame extends JFrame {
 	public MainPane main = null;
 	public SingleGamePane single = null;
 	public MultiGamePane multi = null;
+	public MultiLoginPane multiLogin = null;
 	public InfinityMode infinityMode = null;
 	public ReloadMode reload = null;
 	public TimeMode time = null;
 	public Cursor blankCursor = null;
-	public Audios audio = new Audios();
 	public SingleDatabaseDialog dialog = null;
 	
 	public MainFrame() {
@@ -50,6 +51,7 @@ public class MainFrame extends JFrame {
 		add("main", main = new MainPane(this));
 		add("single", single = new SingleGamePane(this));
 		add("multi", multi = new MultiGamePane(this));
+		add("multiLogin", multiLogin = new MultiLoginPane(this));
 		add("infinity", infinityMode =  new InfinityMode(this));
 		add("reload", reload = new ReloadMode(this));
 		add("time", time = new TimeMode(this));

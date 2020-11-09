@@ -19,7 +19,7 @@ import javax.swing.JButton;
 
 public abstract class SingleDatabaseDialog extends Dialog {
 	
-	protected static final String[] HEADERS = {"rank", "name", "score"};
+	protected static final String[] HEADERS = {"rank", "date" , "name", "score"};
 	protected int[] my_rank = new int[] {0};
 	
 	protected final JTextField textField = new JTextField();
@@ -30,9 +30,9 @@ public abstract class SingleDatabaseDialog extends Dialog {
 		button.setBounds(new Rectangle(350, 550, 200, 30));
 		add(button);
 		
-		textField.setText("???");
 		textField.setBounds(new Rectangle(30, 550, 300, 30));
 		textField.setDocument(new JTextFieldLimit(10));
+		textField.setText("???");
 		add(textField);
 		
 		setLayout(null);

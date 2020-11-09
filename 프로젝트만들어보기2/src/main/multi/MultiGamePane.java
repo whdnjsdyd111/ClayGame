@@ -11,9 +11,9 @@ public class MultiGamePane extends JLayeredPane {
 	public MultiGamePane(MainFrame frame) {
 		this.frame = frame;
 		
-		JLabel lblNewLabel = new JLabel("MultiGame~");
-		lblNewLabel.setBounds(388, 189, 62, 18);
-		add(lblNewLabel);
+		JLabel login = new JLabel("MultiGame~");
+		login.setBounds(388, 189, 62, 18);
+		add(login);
 		
 	}
 }

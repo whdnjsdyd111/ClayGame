@@ -5,38 +5,34 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 
 public class Audios {
-	private AudioInputStream shoot = null;
-	private AudioInputStream reload = null;
-	private AudioInputStream percus = null;
-	private Clip shoot_clip = null;
-	private Clip reload_clip = null;
-	private Clip percus_clip = null;
-	public Audios() {
-		try {
-			shoot = AudioSystem.getAudioInputStream(getClass().getResource("shoot.wav"));
-			reload = AudioSystem.getAudioInputStream(getClass().getResource("reload.wav"));
-			percus = AudioSystem.getAudioInputStream(getClass().getResource("percussion.wav"));
-			shoot_clip = AudioSystem.getClip();
-			shoot_clip.open(shoot);
-			reload_clip = AudioSystem.getClip();
-			reload_clip.open(reload);
-			percus_clip = AudioSystem.getClip();
-			percus_clip.open(percus);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
 	
-	public void shoot() {
-		shoot_clip.start();
-	}
+	public static final String SHOOT = "shoot.wav";
+	public static final String PERCUSSION = "percussion.wav";
+	public static final String RELOAD = "reload.wav";
 	
-	public void reload() {
-		reload_clip.start();
+
+	public static void audio(String fileName) {
+		new Thread() {
+			public void run() {
+				Clip clip = null;
+				try {
+					clip = AudioSystem.getClip();
+					AudioInputStream inputStream = AudioSystem.getAudioInputStream(getClass().getResource(fileName));
+					clip.open(inputStream);
+					clip.start();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+
+				while (true) {
+					try { Thread.sleep(10); } catch (InterruptedException ie2) {}
+					if (clip != null && !clip.isRunning()) {
+						clip.close();
+						break;
+					}
+				}
+			}
+		}.start();
 	}
-	
-	public void percus() {
-		percus_clip.start();
-	}
-	
+
 }

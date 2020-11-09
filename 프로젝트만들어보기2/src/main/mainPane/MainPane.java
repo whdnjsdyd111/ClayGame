@@ -27,7 +27,7 @@ public class MainPane extends JLayeredPane implements MouseShape {
 		add(single);	// 싱글 플레이 장면으로 전환하는 버튼
 		
 		Buttons multi = new Buttons(450, 400, "멀티 플레이", e -> {
-			frame.card.show(frame.getContentPane(), "multi");
+			frame.card.show(frame.getContentPane(), "multiLogin");
 		});
 		add(multi);		// 멀티 플레이 장면으로 전환하는 버튼
 		

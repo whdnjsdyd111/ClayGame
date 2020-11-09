@@ -9,6 +9,7 @@ import javax.swing.border.LineBorder;
 
 import main.MainFrame;
 import main.databases.InfinityDialog;
+import main.resource.Audios;
 
 public class InfinityMode extends InGame {
 	
@@ -30,6 +31,7 @@ public class InfinityMode extends InGame {
 			
 			@Override
 			public void mousePressed(MouseEvent e) {
+				Audios.audio(Audios.SHOOT);
 				removeClay(e.getX(), e.getY(), claies, game_score);
 			}
 			

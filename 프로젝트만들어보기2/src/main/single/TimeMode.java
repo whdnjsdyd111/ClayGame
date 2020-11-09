@@ -10,6 +10,7 @@ import javax.swing.border.LineBorder;
 import main.MainFrame;
 import main.databases.SingleDatabaseDialog;
 import main.databases.TimeDialog;
+import main.resource.Audios;
 
 public class TimeMode extends InGame {
 	
@@ -25,6 +26,7 @@ public class TimeMode extends InGame {
 			
 			@Override
 			public void mousePressed(MouseEvent e) {
+				Audios.audio(Audios.SHOOT);
 				score = removeClay(e.getX(), e.getY(), claies, game_score, score);
 			}
 			

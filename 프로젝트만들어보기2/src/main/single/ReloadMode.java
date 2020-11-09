@@ -12,6 +12,7 @@ import javax.swing.border.LineBorder;
 
 import main.MainFrame;
 import main.databases.ReloadDialog;
+import main.resource.Audios;
 
 public class ReloadMode extends InGame {
 	
@@ -30,6 +31,8 @@ public class ReloadMode extends InGame {
 		for (int i = 0; i < bullet.length; i++) {
 			bullet[i].setVisible(true);
 			bullet_count++;
+			if(i == 4)
+				return;
 			try {
 				Thread.sleep(250);
 			} catch (InterruptedException e) {
@@ -63,10 +66,11 @@ public class ReloadMode extends InGame {
 			@Override
 			public void mousePressed(MouseEvent e) {
 				if(bullet_count != -1 && !(reload.getState() == Thread.State.RUNNABLE || reload.getState() == Thread.State.TIMED_WAITING)) {
+					Audios.audio(Audios.SHOOT);
 					score = removeClay(e.getX(), e.getY(), claies, game_score, score, round);
 					bullet[bullet_count--].setVisible(false);
 				} else {
-					// 격발 소리
+					Audios.audio(Audios.PERCUSSION);
 				}
 			}
 			
@@ -94,11 +98,14 @@ public class ReloadMode extends InGame {
 		this.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent e) {
-				if(e.getKeyChar() == 'r' && reload.getState() == Thread.State.NEW)
+				if(e.getKeyChar() == 'r' && reload.getState() == Thread.State.NEW) {
 					reload.start();
+					Audios.audio(Audios.RELOAD);
+				}
 				if(e.getKeyChar() == 'r' && reload.getState() == Thread.State.TERMINATED) {
 					reload = new Thread(reload_run);
 					reload.start();
+					Audios.audio(Audios.RELOAD);
 				}
 			}
 		});
