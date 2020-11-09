@@ -8,6 +8,7 @@ import javax.swing.JLabel;
 import javax.swing.border.LineBorder;
 
 import main.MainFrame;
+import main.databases.InfinityDialog;
 
 public class InfinityMode extends InGame {
 	
@@ -18,6 +19,7 @@ public class InfinityMode extends InGame {
 		super(frame);
 		
 		score = 10;
+		game_time.setSize(200, 50);
 		
 		this.addMouseListener(new MouseListener() {
 			
@@ -28,7 +30,7 @@ public class InfinityMode extends InGame {
 			
 			@Override
 			public void mousePressed(MouseEvent e) {
-				removeClay(e.getX(), e.getY(), claies, game_score, score);
+				removeClay(e.getX(), e.getY(), claies, game_score);
 			}
 			
 			@Override
@@ -53,17 +55,21 @@ public class InfinityMode extends InGame {
 			int i = 0;
 			
 			while(true) {
-				int sec = i % 60;
-				game_time.setText("0" + (i / 60) + ":" + (sec < 10 ? "0" + sec : sec));
+				int sec = i / 100;
+				int minu = sec / 60;
+				int mili = i % 100;
+				game_time.setText((minu < 10 ? "0" + minu : minu) + ":" + (sec < 10 ? "0" + sec : sec) + ":" + (mili < 10 ? "0" + mili : mili));
 				
 				try {
-					Thread.sleep(1000);
+					Thread.sleep(10);
 				} catch (InterruptedException e) {
 					break;
 				}
 				
 				i++;
 			}
+			
+			frame.dialog = new InfinityDialog(frame, "infinity mode rank", game_time.getText());
 		};
 		
 		create_clay = () -> {
@@ -116,8 +122,7 @@ public class InfinityMode extends InGame {
 					}
 
 					if(clay_label.isVisible() && score != 0) {
-						score--;
-						changeText(score);
+						changeText(--score);
 						
 						if(score == 0)
 							start_infinity.interrupt();

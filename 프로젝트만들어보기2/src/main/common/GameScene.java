@@ -7,12 +7,41 @@ import javax.swing.JLabel;
 
 public interface GameScene {
 	
-	default public void removeClay(int x, int y, Set<JLabel> claies, JLabel game_score, int score) {
+	default public int removeClay(int x, int y, Set<JLabel> claies, JLabel game_score, int score) {
 		try {
 			for(JLabel label : claies) {
 				if(checkTarget(x, y, label)) {
 					label.setVisible(false);
-					game_score.setText("Score " + score);
+					game_score.setText("Score " + ++score);
+				}
+			}
+		} catch(ConcurrentModificationException e) {
+			
+		}
+		
+		return score;
+	}
+	
+	default public int removeClay(int x, int y, Set<JLabel> claies, JLabel game_score, int score, int round) {
+		try {
+			for(JLabel label : claies) {
+				if(checkTarget(x, y, label)) {
+					label.setVisible(false);
+					game_score.setText("Score " + (score += round));
+				}
+			}
+		} catch(ConcurrentModificationException e) {
+			
+		}
+		
+		return score;
+	}
+	
+	default public void removeClay(int x, int y, Set<JLabel> claies, JLabel game_score) {
+		try {
+			for(JLabel label : claies) {
+				if(checkTarget(x, y, label)) {
+					label.setVisible(false);
 				}
 			}
 		} catch(ConcurrentModificationException e) {

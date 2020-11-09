@@ -8,6 +8,8 @@ import javax.swing.JLabel;
 import javax.swing.border.LineBorder;
 
 import main.MainFrame;
+import main.databases.SingleDatabaseDialog;
+import main.databases.TimeDialog;
 
 public class TimeMode extends InGame {
 	
@@ -23,7 +25,7 @@ public class TimeMode extends InGame {
 			
 			@Override
 			public void mousePressed(MouseEvent e) {
-				removeClay(e.getX(), e.getY(), claies, game_score, ++score);
+				score = removeClay(e.getX(), e.getY(), claies, game_score, score);
 			}
 			
 			@Override
@@ -115,6 +117,7 @@ public class TimeMode extends InGame {
 			repaint();
 			showMenu();
 			isEnd = false;
+			frame.dialog = new TimeDialog(frame, "time mode rank", score + "");
 			score = 0;
 		};
 	}

@@ -2,12 +2,14 @@ package main;
 
 import java.awt.CardLayout;
 import java.awt.Cursor;
+import java.awt.Dialog;
 import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
 
 import javax.swing.JFrame;
 
+import main.databases.SingleDatabaseDialog;
 import main.mainPane.MainPane;
 import main.multi.MultiGamePane;
 import main.resource.Audios;
@@ -27,8 +29,15 @@ public class MainFrame extends JFrame {
 	public TimeMode time = null;
 	public Cursor blankCursor = null;
 	public Audios audio = new Audios();
+	public SingleDatabaseDialog dialog = null;
 	
 	public MainFrame() {
+		try {
+			Class.forName("oracle.jdbc.driver.OracleDriver");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
 		setTitle("클레이 사격 게임");
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

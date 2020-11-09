@@ -11,6 +11,7 @@ import javax.swing.JLabel;
 import javax.swing.border.LineBorder;
 
 import main.MainFrame;
+import main.databases.ReloadDialog;
 
 public class ReloadMode extends InGame {
 	
@@ -20,21 +21,23 @@ public class ReloadMode extends InGame {
 	int bullet_count = 4;	// 인덱스에 맞추기
 	Thread game_start = null;
 	
-	Thread reload = new Thread(() -> {
+	Runnable reload_run = () -> {
 		bullet_count = -1;
 		for (int i = 0; i < bullet.length; i++) {
 			bullet[i].setVisible(false);
 		}
 		
 		for (int i = 0; i < bullet.length; i++) {
-			bullet[bullet.length - 1 - i].setVisible(true);
+			bullet[i].setVisible(true);
 			bullet_count++;
 			try {
 				Thread.sleep(250);
 			} catch (InterruptedException e) {
 			}
 		}
-	});
+	};
+	
+	Thread reload = new Thread(reload_run);
 	
 	public ReloadMode(MainFrame frame) {
 		super(frame);
@@ -59,9 +62,8 @@ public class ReloadMode extends InGame {
 			
 			@Override
 			public void mousePressed(MouseEvent e) {
-				System.out.println(reload.getState());
-				if(bullet_count != -1 && reload.getState() != Thread.State.RUNNABLE) {
-					removeClay(e.getX(), e.getY(), claies, game_score, score += round);
+				if(bullet_count != -1 && !(reload.getState() == Thread.State.RUNNABLE || reload.getState() == Thread.State.TIMED_WAITING)) {
+					score = removeClay(e.getX(), e.getY(), claies, game_score, score, round);
 					bullet[bullet_count--].setVisible(false);
 				} else {
 					// 격발 소리
@@ -92,11 +94,12 @@ public class ReloadMode extends InGame {
 		this.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent e) {
-				System.out.println(e.getKeyChar());
 				if(e.getKeyChar() == 'r' && reload.getState() == Thread.State.NEW)
 					reload.start();
-				if(e.getKeyChar() == 'r' && reload.getState() == Thread.State.TERMINATED)
-					reload.run();
+				if(e.getKeyChar() == 'r' && reload.getState() == Thread.State.TERMINATED) {
+					reload = new Thread(reload_run);
+					reload.start();
+				}
 			}
 		});
 		
@@ -188,6 +191,9 @@ public class ReloadMode extends InGame {
 			}
 			repaint();
 			showMenu();
+			
+			frame.dialog = new ReloadDialog(frame, "reload mode rank", score + "");
+			
 			score = 0;
 		};
 	}
