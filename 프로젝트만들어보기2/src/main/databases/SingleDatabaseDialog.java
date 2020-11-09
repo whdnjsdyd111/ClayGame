@@ -3,7 +3,9 @@ package main.databases;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dialog;
+import java.awt.Dimension;
 import java.awt.Rectangle;
+import java.awt.Toolkit;
 
 import javax.swing.JComponent;
 import javax.swing.JFrame;
@@ -27,6 +29,15 @@ public abstract class SingleDatabaseDialog extends Dialog {
 	
 	public SingleDatabaseDialog(JFrame frame, String name, String score) {
 		super(frame, name, true);
+		setLayout(null);
+		setBounds(0, 0, 600, 600);
+		setResizable(false);
+		
+		Dimension frameSize = this.getSize(); // 프레임 사이즈
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize(); // 모니터 사이즈
+		
+		this.setLocation((screenSize.width - frameSize.width)/2, (screenSize.height - frameSize.height)/2); // 화면 중앙
+		
 		button.setBounds(new Rectangle(350, 550, 200, 30));
 		add(button);
 		
@@ -34,9 +45,6 @@ public abstract class SingleDatabaseDialog extends Dialog {
 		textField.setDocument(new JTextFieldLimit(10));
 		textField.setText("???");
 		add(textField);
-		
-		setLayout(null);
-		setBounds(1200, 0, 600, 600);
 		
 		getRank(score);
 		insertRank(score);

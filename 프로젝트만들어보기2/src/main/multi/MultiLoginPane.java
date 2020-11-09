@@ -51,13 +51,18 @@ public class MultiLoginPane extends JLayeredPane {
 		add(loginBtn);
 		
 		Buttons regBtn = new Buttons(100, 550, "회원 가입", e -> {
-			
+			frame.card.show(frame.getContentPane(), "multiReg");
 		});
 		add(regBtn);
 		
 		Buttons findBtn = new Buttons(800, 550, "비번 찾기", e -> {
-			
+			frame.card.show(frame.getContentPane(), "findPasswd");
 		});
 		add(findBtn);
+		
+		Buttons to_main = new Buttons(450, 650, "메인으로", e -> {
+			frame.card.show(frame.getContentPane(), "main");
+		});
+		add(to_main);
 	}
 }
