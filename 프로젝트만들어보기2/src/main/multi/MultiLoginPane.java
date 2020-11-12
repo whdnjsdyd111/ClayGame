@@ -9,43 +9,58 @@ import javax.swing.JTextField;
 
 import main.MainFrame;
 import main.common.Buttons;
+import main.databases.MemberDAO;
 
 public class MultiLoginPane extends JLayeredPane {
 	
 	MainFrame frame = null;
-	private JTextField textField;
-	private JTextField textField_1;
+	private JTextField tf_id;
+	private JTextField tf_pw;
 	
 	public MultiLoginPane(MainFrame frame) {
 		this.frame = frame;
 		setLayout(null);
 		
-		JLabel lblNewLabel = new JLabel("멀티 플레이 로그인");
-		lblNewLabel.setFont(new Font("휴먼편지체", Font.BOLD, 35));
-		lblNewLabel.setBounds(440, 100, 320, 60);
-		add(lblNewLabel);
+		JLabel multi_label = new JLabel("멀티 플레이 로그인");
+		multi_label.setFont(new Font("휴먼편지체", Font.BOLD, 35));
+		multi_label.setBounds(440, 100, 320, 60);
+		add(multi_label);
 		
-		textField = new JTextField();
-		textField.setBounds(450, 250, 400, 50);
-		add(textField);
-		textField.setColumns(10);
+		tf_id = new JTextField();
+		tf_id.setBounds(450, 250, 400, 50);
+		add(tf_id);
+		tf_id.setColumns(10);
 		
-		textField_1 = new JTextField();
-		textField_1.setColumns(10);
-		textField_1.setBounds(450, 400, 400, 50);
-		add(textField_1);
+		tf_pw = new JTextField();
+		tf_pw.setBounds(450, 400, 400, 50);
+		add(tf_pw);
 		
-		JLabel lblNewLabel_1 = new JLabel("ID 입력");
-		lblNewLabel_1.setFont(new Font("바탕", Font.PLAIN, 35));
-		lblNewLabel_1.setBounds(250, 250, 150, 50);
-		add(lblNewLabel_1);
+		JLabel id_label = new JLabel("ID 입력");
+		id_label.setFont(new Font("바탕", Font.PLAIN, 35));
+		id_label.setBounds(250, 250, 150, 50);
+		add(id_label);
 		
-		JLabel lblNewLabel_2 = new JLabel("PW 입력");
-		lblNewLabel_2.setFont(new Font("바탕", Font.PLAIN, 35));
-		lblNewLabel_2.setBounds(250, 400, 150, 50);
-		add(lblNewLabel_2);
+		JLabel pw_label = new JLabel("PW 입력");
+		pw_label.setFont(new Font("바탕", Font.PLAIN, 35));
+		pw_label.setBounds(250, 400, 150, 50);
+		add(pw_label);
 		
 		Buttons loginBtn = new Buttons(450, 550, "로그인", e -> {
+			String id = tf_id.getText();
+			String pw = tf_pw.getText();
+			
+			if(id.equals("") || pw.equals("")) {
+				new AlertDialog(frame, AlertDialog.MSG_EMPTY);
+			}
+			
+			String nickname = MemberDAO.getInstance().checkAll(id, pw);
+			
+			if(nickname != null) {
+				frame.add("multi", new MultiGamePane(frame, nickname));
+				frame.card.show(frame.getContentPane(), "multi");
+			} else {
+				new AlertDialog(frame, AlertDialog.MSG_FAIL);
+			}
 			
 		});
 		add(loginBtn);

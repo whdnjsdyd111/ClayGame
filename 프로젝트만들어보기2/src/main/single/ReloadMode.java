@@ -213,7 +213,7 @@ public class ReloadMode extends InGame {
 		frame.setCursor(frame.blankCursor);
 	}
 	
-	public int getHeight(float x, int y) {
+	private int getHeight(float x, int y) {
 		return (int) ((x - 600) * (x - 600) / (7200) + y);
 	}
 }

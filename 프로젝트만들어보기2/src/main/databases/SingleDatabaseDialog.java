@@ -1,22 +1,13 @@
 package main.databases;
 
-import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dialog;
 import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.awt.Toolkit;
 
-import javax.swing.JComponent;
-import javax.swing.JFrame;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.TableCellRenderer;
-import javax.swing.table.TableColumnModel;
-import javax.swing.JTextField;
-import javax.swing.SwingConstants;
 import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JTextField;
 
 
 public abstract class SingleDatabaseDialog extends Dialog {

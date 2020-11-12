@@ -15,6 +15,7 @@ public class InfinityMode extends InGame {
 	
 	Thread start_infinity = null;
 	Thread start_time = null;
+	int minu = 0;
 
 	public InfinityMode(MainFrame frame) {
 		super(frame);
@@ -58,7 +59,7 @@ public class InfinityMode extends InGame {
 			
 			while(true) {
 				int sec = i / 100;
-				int minu = sec / 60;
+				minu = sec / 60;
 				int mili = i % 100;
 				game_time.setText((minu < 10 ? "0" + minu : minu) + ":" + (sec < 10 ? "0" + sec : sec) + ":" + (mili < 10 ? "0" + mili : mili));
 				
@@ -100,10 +101,11 @@ public class InfinityMode extends InGame {
 					add(clay_label);
 					
 					int ran = (int) (Math.random() * 2);
+					float speed = (float) (minu > 0 ? minu * 1.5 : 0);
 					
 					if(ran == 0) {
-						for (int i = -100; i < 1200; i+=2) {
-							clay_label.setLocation(i, getHeight(i, height));
+						for (float i = -100; i < 1200; i+=(2 + speed)) {
+							clay_label.setLocation((int) i, getHeight(i, height));
 							try {
 								Thread.sleep(1);
 							} catch (InterruptedException e) {
@@ -112,8 +114,8 @@ public class InfinityMode extends InGame {
 							}
 						}
 					} else {
-						for (int i = 1200; i > -100; i-=2) {
-							clay_label.setLocation(i, getHeight(i, height));
+						for (float i = 1200; i > -100; i-=(2 + speed)) {
+							clay_label.setLocation((int) i, getHeight(i, height));
 							try {
 								Thread.sleep(1);
 							} catch (InterruptedException e) {
@@ -148,6 +150,7 @@ public class InfinityMode extends InGame {
 		start_time.start();
 		start_infinity.start();
 		score = 10;
+		minu = 0;
 	}
 	
 	private void changeText(int score) {
@@ -159,5 +162,9 @@ public class InfinityMode extends InGame {
 		
 		repaint();
 		showMenu();
+	}
+	
+	private int getHeight(float x, int y) {
+		return (int) ((x - 600) * (x - 600) / (7200) + y);
 	}
 }

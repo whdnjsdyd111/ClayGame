@@ -25,7 +25,6 @@ public class MainFrame extends JFrame {
 	public CardLayout card = null;
 	public MainPane main = null;
 	public SingleGamePane single = null;
-	public MultiGamePane multi = null;
 	public MultiLoginPane multiLogin = null;
 	public MultiRegPane multiReg = null;
 	public FindPasswdPane findpasswd = null;
@@ -52,14 +51,12 @@ public class MainFrame extends JFrame {
 		
 		this.setLocation((screenSize.width - frameSize.width)/2, (screenSize.height - frameSize.height)/2); // È­¸é Áß¾Ó
 
-		
 		card = new CardLayout(0, 0);
 		
 		setLayout(card);
 		
 		add("main", main = new MainPane(this));
 		add("single", single = new SingleGamePane(this));
-		add("multi", multi = new MultiGamePane(this));
 		add("multiLogin", multiLogin = new MultiLoginPane(this));
 		add("multiReg", multiReg = new MultiRegPane(this));
 		add("findPasswd", findpasswd = new FindPasswdPane(this));

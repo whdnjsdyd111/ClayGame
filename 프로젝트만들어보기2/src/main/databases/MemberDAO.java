@@ -65,6 +65,31 @@ public class MemberDAO {
 		return check;
 	}
 	
+	public String checkAll(String id, String pw) {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String nickname = null;
+		try {
+			conn = getConnection();
+			String sql = "SELECT mem_pw, mem_nickname FROM member WHERE mem_id = ?";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, id);
+			
+			rs = pstmt.executeQuery();
+			
+			if(rs.next())
+				if(BCrypt.checkpw(SHA256.getInstance().getSha256(pw), rs.getString(1)))
+					nickname = rs.getString(2);
+				
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return nickname;
+	}
+	
 	public void insert(String id, String pw, String nick) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
