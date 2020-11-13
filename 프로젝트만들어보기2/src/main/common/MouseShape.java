@@ -3,7 +3,6 @@ package main.common;
 import java.awt.Container;
 import java.awt.Image;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.io.IOException;
 
@@ -18,6 +17,35 @@ public interface MouseShape {
 		Image image = null;
 		try {
 			image = ImageIO.read(getClass().getResource(MOUSE_SHAPE_PATH));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		Image changeImage = image.getScaledInstance(100, 100, Image.SCALE_SMOOTH);
+		ImageIcon icon = new ImageIcon(changeImage);
+		JLabel label = new JLabel(icon);
+		label.setSize(100, 100);
+		
+		cont.add(label);
+		
+		cont.addMouseMotionListener(new MouseMotionListener() {
+			
+			@Override
+			public void mouseMoved(MouseEvent e) {
+				label.setBounds(e.getX() - 50, e.getY() - 50, label.getWidth(), label.getHeight());
+			}
+			
+			@Override
+			public void mouseDragged(MouseEvent e) {
+				label.setBounds(e.getX() - 50, e.getY() - 50, label.getWidth(), label.getHeight());
+			}
+		});
+	}
+	
+	default void setMouseShape(Container cont, int temp) {
+		Image image = null;
+		try {
+			image = ImageIO.read(getClass().getResource("../" + MOUSE_SHAPE_PATH));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

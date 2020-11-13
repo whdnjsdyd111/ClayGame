@@ -1,25 +1,29 @@
-package main.single;
+package main.multi.my_scene;
 
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.nio.ByteBuffer;
+import java.nio.IntBuffer;
+import java.nio.channels.SocketChannel;
 
 import javax.swing.JLabel;
 import javax.swing.border.LineBorder;
 
 import main.MainFrame;
-import main.databases.InfinityDialog;
+import main.multi.AlertDialog;
 import main.resource.Audios;
 
-public class InfinityMode extends InGame {
+public class MyInfinity extends MultiMyGame {
 	
 	Thread start_infinity = null;
 	Thread start_time = null;
 	int minu = 0;
-
-	public InfinityMode(MainFrame frame) {
-		super(frame);
-		
+	int i = 0;
+	
+	public MyInfinity(MainFrame frame, SocketChannel socketChannel) {
+		super(frame, socketChannel);
 		score = 10;
 		game_time.setSize(200, 50);
 		
@@ -34,6 +38,7 @@ public class InfinityMode extends InGame {
 			public void mousePressed(MouseEvent e) {
 				Audios.audio(Audios.SHOOT);
 				removeClay(e.getX(), e.getY(), claies, game_score);
+				sendMousePoint(e.getX(), e.getY());
 			}
 			
 			@Override
@@ -53,9 +58,9 @@ public class InfinityMode extends InGame {
 				
 			}
 		});
-		
+
 		time_start = () -> {
-			int i = 0;
+			i = 0;
 			
 			while(true) {
 				int sec = i / 100;
@@ -72,9 +77,9 @@ public class InfinityMode extends InGame {
 				i++;
 			}
 			
-			frame.dialog = new InfinityDialog(frame, "infinity mode rank", game_time.getText());
+			// frame.dialog = new InfinityDialog(frame, "infinity mode rank", game_time.getText());
 		};
-		
+
 		create_clay = () -> {
 			claies_group = new ThreadGroup("clay group");
 			claies_group.setDaemon(true);
@@ -92,7 +97,7 @@ public class InfinityMode extends InGame {
 				
 				new Thread(claies_group, () -> {
 					
-					int height = (int) (Math.random() * 300);
+					int height = (int) (Math.random() * 200) + 100;
 					
 					JLabel clay_label = new JLabel("clay");
 					clay_label.setBounds(0, height, 100, 50);
@@ -102,9 +107,10 @@ public class InfinityMode extends InGame {
 					
 					int ran = (int) (Math.random() * 2);
 					float speed = (float) (minu > 0 ? minu * 1.5 : 0);
+					sendClayPoint(height, ran);
 					
 					if(ran == 0) {
-						for (float i = -100; i < 1200; i+=(2 + speed)) {
+						for (float i = -100; i < 900; i+=(2 + speed)) {
 							clay_label.setLocation((int) i, getHeight(i, height));
 							try {
 								Thread.sleep(1);
@@ -114,7 +120,7 @@ public class InfinityMode extends InGame {
 							}
 						}
 					} else {
-						for (float i = 1200; i > -100; i-=(2 + speed)) {
+						for (float i = 900; i > -100; i-=(2 + speed)) {
 							clay_label.setLocation((int) i, getHeight(i, height));
 							try {
 								Thread.sleep(1);
@@ -138,6 +144,8 @@ public class InfinityMode extends InGame {
 				}).start();
 			}
 		};
+		startGame();
+		setVisible(true);
 	}
 	
 	@Override
@@ -160,7 +168,36 @@ public class InfinityMode extends InGame {
 	private void stopInfinity() {
 		claies_group.interrupt();
 		
+		endGame();
 		repaint();
 		showMenu();
+	}
+	
+	@Override
+	public void endGame() {
+		try {
+			IntBuffer intBuffer = IntBuffer.wrap(new int[] { -1, i });
+			ByteBuffer byteBuffer = ByteBuffer.allocate(intBuffer.capacity() * 4);
+			for (int i = 0; i < intBuffer.capacity(); i++) {
+				byteBuffer.putInt(intBuffer.get(i));
+			}
+			byteBuffer.flip();
+			socketChannel.write(byteBuffer);
+			
+			System.out.println("[게임 끝남 전송, 점수 전송]");
+		} catch (Exception e) {
+			e.printStackTrace();
+			try {
+				System.out.println("[상대방과 통신 두절 : " + socketChannel.getRemoteAddress() + 
+						" : " + Thread.currentThread().getName() + "]");				
+				socketChannel.close();
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+			isEnd = true;
+			frame.setCursor(Cursor.getDefaultCursor());
+			frame.remove(this);
+			new AlertDialog(frame, AlertDialog.MSG_NET1);
+		}
 	}
 }

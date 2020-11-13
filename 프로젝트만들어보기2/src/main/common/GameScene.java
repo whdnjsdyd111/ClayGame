@@ -62,6 +62,10 @@ public interface GameScene {
 		return (int) ((x - 600) * (x - 600) / (7200) + y);
 	}
 	
+	default int getHeight(float x, int y) {
+		return (int) ((x - 600) * (x - 600) / (7200) + y);
+	}
+	
 	
 	public void startGame();
 	public void showMenu();

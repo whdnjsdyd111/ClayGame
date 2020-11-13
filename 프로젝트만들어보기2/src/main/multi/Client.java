@@ -1,65 +1,61 @@
 package main.multi;
 
 import java.io.IOException;
-import java.net.InetAddress;
 import java.net.InetSocketAddress;
-import java.net.NetworkInterface;
-import java.net.SocketException;
 import java.nio.ByteBuffer;
+import java.nio.IntBuffer;
 import java.nio.channels.SocketChannel;
 import java.nio.charset.Charset;
-import java.util.Enumeration;
-import java.util.Scanner;
+import java.util.Arrays;
+
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
+import javax.swing.JLayeredPane;
+import javax.swing.JTextArea;
+
+import main.MainFrame;
+import main.multi.oppo_scene.MultiOppoGame;
+import main.multi.oppo_scene.OppoInfinity;
 
 public class Client {
 	SocketChannel socketChannel;
+	private String nickname;
+	private JLabel master_nickname;
+	private JTextArea textarea;
+	private MainFrame frame;
+	private JLayeredPane joinedRoom;
+	private JComboBox<String[]> comboBox;
 	
-	public Client(String ip) {
+	private MultiOppoGame oppo_scene = null;
+	
+	public Client(String ip, String nickname, JLabel master_nickname, JTextArea textarea, MainFrame frame, 
+			JLayeredPane joinedRoom, JComboBox<String[]> comboBox) {
+		this.nickname = nickname;
+		this.master_nickname = master_nickname;
+		this.textarea = textarea;
+		this.frame = frame;
+		this.joinedRoom = joinedRoom;
+		this.comboBox = comboBox;
+		
 		try {
 			socketChannel = SocketChannel.open();
-			socketChannel.connect(new InetSocketAddress(ip, 7000));
+			socketChannel.configureBlocking(true);	// 블로킹 방식 진행
+			socketChannel.connect(new InetSocketAddress(ip, Server.PORT));
 			System.out.println("[연결 완료 : " + socketChannel.getRemoteAddress() + "]");
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.out.println("[서버 통신 안됨]");
 			if(socketChannel.isOpen()) stopClient();
-			return;
+			return;			
 		}
 		
-		String hostAddr = "";
-		
-		try {
-
-			Enumeration<NetworkInterface> nienum = NetworkInterface.getNetworkInterfaces();
-			while (nienum.hasMoreElements()) {
-
-				NetworkInterface ni = nienum.nextElement();
-
-				Enumeration<InetAddress> kk= ni.getInetAddresses();
-
-				while (kk.hasMoreElements()) {
-
-					InetAddress inetAddress = kk.nextElement();
-
-					if (!inetAddress.isLoopbackAddress() && 
-
-					!inetAddress.isLinkLocalAddress() && 
-
-					inetAddress.isSiteLocalAddress()) {
-
-						 hostAddr = inetAddress.getHostAddress().toString();
-						 System.out.println(hostAddr);
-					}
-				}
-			}
-		} catch (SocketException e) {
-			e.printStackTrace();
-		} 
+		sendNickname();
+		getNickname();
 		
 		receive();	// 서버에 데이터 받기
 	}
 	
-	private void stopClient() {
+	public void stopClient() {
 		try {
 			System.out.println("[연결 끊음]");
 			if(socketChannel != null && socketChannel.isOpen())
@@ -67,6 +63,8 @@ public class Client {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		frame.card.show(frame.getContentPane(), "multi");
+		frame.remove(joinedRoom);
 	}
 	
 	private void receive() {
@@ -76,48 +74,136 @@ public class Client {
 					ByteBuffer byteBuffer = ByteBuffer.allocate(100);
 					
 					// 서버 비정상적으로 종료됐을 때 IOException 발생
-					int readByteCount = socketChannel.read(byteBuffer);			
+					int readByteCount = socketChannel.read(byteBuffer);
 					
 					// 서버 정상적으로 Socket close를 호출 했을 경우
 					if(readByteCount == -1)
 						throw new IOException();
 					
 					byteBuffer.flip();
+					
+					if(byteBuffer.get(0) == 0) {
+						comboBox.setSelectedIndex(0);
+						continue;
+					} else if(byteBuffer.get(0) == 1) {
+						comboBox.setSelectedIndex(1);
+						continue;
+					} else if(byteBuffer.get(0) == 2) {
+						comboBox.setSelectedIndex(2);
+						continue;
+					} else if(byteBuffer.get(0) == 3) {
+						System.out.println("[게임 시작]");
+						receiveGameInfo();
+						oppo_scene = new OppoInfinity(frame);
+						break;
+					}
+					
 					Charset charset = Charset.forName("UTF-8");
 					String data = charset.decode(byteBuffer).toString();	// 문자열 변환
-					System.out.println("[받은 문자]\t" + data);
+					System.out.println("[데이터 받음]");
+					textarea.setText(textarea.getText() + "\n" + data);
 				} catch (Exception e) {
 					e.printStackTrace();
 					System.out.println("[서버 통신 안됨]");
 					stopClient();
+					new AlertDialog(frame, AlertDialog.MSG_NET);
 					break;
 				}
 			}
 		}).start();
 	}
 	
-	private void send(String data) {
-		new Thread(() -> {
+	public void send(String data) {
+		try {
+			Charset charset = Charset.forName("UTF-8");
+			ByteBuffer byteBuffer = charset.encode(data);
+			socketChannel.write(byteBuffer);	// 서버로 데이터 보내기
+			System.out.println("[보내기 완료]");
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("[서버 통신 안됨]");
+			stopClient();
+			new AlertDialog(frame, AlertDialog.MSG_NET);
+		}
+	}
+	
+	private void getNickname() {
+		while(true) {
 			try {
+				ByteBuffer byteBuffer = ByteBuffer.allocate(100);
+				
+				// 서버 비정상적으로 종료됐을 때 IOException 발생
+				int readByteCount = socketChannel.read(byteBuffer);			
+				
+				// 서버 정상적으로 Socket close를 호출 했을 경우
+				if(readByteCount == -1)
+					throw new IOException();
+				
+				byteBuffer.flip();
 				Charset charset = Charset.forName("UTF-8");
-				ByteBuffer byteBuffer = charset.encode(data);
-				socketChannel.write(byteBuffer);	// 서버로 데이터 보내기
-				System.out.println("[보내기 완료]");
+				String data = charset.decode(byteBuffer).toString();	// 문자열 변환
+				System.out.println("[닉네임 받음]");
+				master_nickname.setText(data);
+				break;
 			} catch (Exception e) {
 				e.printStackTrace();
 				System.out.println("[서버 통신 안됨]");
 				stopClient();
+				new AlertDialog(frame, AlertDialog.MSG_NET);
+				break;
 			}
-		}).start();
+		}
 	}
 	
-	public static void main(String[] args) {
-		Client client = new Client("172.30.1.25");
-		
-		Scanner sc = new Scanner(System.in);
-		
-		while(true) {
-			client.send(sc.next());
+	private void sendNickname() {
+		try {
+			Charset charset = Charset.forName("UTF-8");
+			ByteBuffer byteBuffer = charset.encode(nickname);
+			socketChannel.write(byteBuffer);	// 서버로 데이터 보내기
+			System.out.println("[닉네임 보내기 완료]");
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("[서버 통신 안됨]");
+			stopClient();
+			new AlertDialog(frame, AlertDialog.MSG_NET);
 		}
+	}
+	
+	private void receiveGameInfo() {
+		System.out.println("[게임 정보 받기 시작]");
+		new Thread(() -> {
+			while(true) {
+				try {
+					ByteBuffer byteBuffer = ByteBuffer.allocate(100);
+					
+					// 서버 비정상적으로 종료됐을 때 IOException 발생
+					int readByteCount = socketChannel.read(byteBuffer);
+					
+					// 서버 정상적으로 Socket close를 호출 했을 경우
+					if(readByteCount == -1)
+						throw new IOException();
+
+					byteBuffer.flip();
+					IntBuffer intBuffer = byteBuffer.asIntBuffer();
+					int[] data = new int[intBuffer.capacity()];
+					intBuffer.get(data);
+					
+					if(data[0] == -1) {
+						oppo_scene.endGame(data[1]);
+					} else if(data[1] == 0 || data[1] == 1)
+						oppo_scene.create_clay(data[0], data[1]);
+					else
+						oppo_scene.receiveMousePoint(data[0], data[1]);
+						
+					
+				} catch (Exception e) {
+					e.printStackTrace();
+					System.out.println("[서버 통신 안됨]");
+					stopClient();
+					new AlertDialog(frame, AlertDialog.MSG_NET);
+					break;
+				}
+			}
+		}).start();
 	}
 }

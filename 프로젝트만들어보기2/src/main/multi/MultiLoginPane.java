@@ -28,11 +28,13 @@ public class MultiLoginPane extends JLayeredPane {
 		
 		tf_id = new JTextField();
 		tf_id.setBounds(450, 250, 400, 50);
+		tf_id.setText("whdnjsdyd111");
 		add(tf_id);
 		tf_id.setColumns(10);
 		
 		tf_pw = new JTextField();
 		tf_pw.setBounds(450, 400, 400, 50);
+		tf_pw.setText("jsh688123");
 		add(tf_pw);
 		
 		JLabel id_label = new JLabel("ID ют╥б");
