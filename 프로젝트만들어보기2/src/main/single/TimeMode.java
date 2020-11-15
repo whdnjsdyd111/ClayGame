@@ -10,6 +10,11 @@ import main.resource.Audios;
 
 public class TimeMode extends InGame {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	public TimeMode(MainFrame frame) {
 		super(frame);
 		
@@ -45,7 +50,7 @@ public class TimeMode extends InGame {
 		});
 		
 		time_start = () -> {
-			for (int i = 10; i >= 0; i--) {
+			for (int i = 60; i >= 0; i--) {
 				int sec = i % 60;
 				game_time.setText("0" + (i / 60) + ":" + (sec < 10 ? "0" + sec : sec));
 				
@@ -76,7 +81,7 @@ public class TimeMode extends InGame {
 					
 					int height = (int) (Math.random() * 300);
 					
-					Plate plate = new Plate(height, Plate.PLATE_PNG);
+					Plate plate = new Plate(height);
 					claies.add(plate);
 					add(plate);
 					

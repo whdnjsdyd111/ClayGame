@@ -15,6 +15,11 @@ import main.resource.Audios;
 
 public class ReloadMode extends InGame {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
 	int round = 1;
 	JLabel round_label = null;
 	Bullet bullet[] = new Bullet[5];	// ÃÑ¾Ë 5¹ß
@@ -144,7 +149,7 @@ public class ReloadMode extends InGame {
 							
 							int height = (int) (Math.random() * 300);
 							
-							Plate plate = new Plate(height, Plate.PLATE_PNG);
+							Plate plate = new Plate(height);
 							claies.add(plate);
 							add(plate);
 							

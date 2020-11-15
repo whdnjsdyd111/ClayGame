@@ -5,20 +5,24 @@ import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.awt.Toolkit;
 
-import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JTextField;
 
-import main.common.Buttons;
+import main.common.MyButton;
 
 
 public abstract class SingleDatabaseDialog extends Dialog {
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	
 	protected static final String[] HEADERS = {"Rank", "Date" , "Name", "Score"};
 	protected int[] my_rank = new int[] {0};
 	
 	protected final JTextField textField = new JTextField();
-	protected final Buttons button = new Buttons(350, 550, "Upload Rank", null);
+	protected final MyButton button = new MyButton(350, 550, "Upload Rank", null);
 	
 	public SingleDatabaseDialog(JFrame frame, String name, String score) {
 		super(frame, name, true);

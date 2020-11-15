@@ -2,21 +2,29 @@ package main.single;
 
 import java.awt.Cursor;
 import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Image;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 
 import main.MainFrame;
-import main.common.Buttons;
+import main.common.MyButton;
 import main.common.GameScene;
 import main.common.MouseShape;
 import main.common.Plate;
 
 public abstract class InGame extends JLayeredPane implements GameScene, MouseShape {
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	
 	MainFrame frame = null;
 	Set<Plate> claies = null;
@@ -30,6 +38,8 @@ public abstract class InGame extends JLayeredPane implements GameScene, MouseSha
 	Runnable time_start = null;
 	Runnable create_clay = null;
 	ThreadGroup claies_group = null;
+
+	private Image image = new ImageIcon(MainFrame.class.getResource("resource/glass_land.jpg")).getImage();
 	
 	public InGame(MainFrame frame) {
 		this.frame = frame;
@@ -48,16 +58,16 @@ public abstract class InGame extends JLayeredPane implements GameScene, MouseSha
 		
 		claies = Collections.synchronizedSet(new HashSet<Plate>());
 		
-		setMouseShape(this, MOUSE_SHAPE_PATH);
+		setMouseShape(this);
 		
-		to_single = new Buttons(450, 200, "Menu", e -> {
+		to_single = new MyButton(450, 200, "Menu", e -> {
 			frame.card.show(frame.getContentPane(), "single");
 			hideMenu();
 			frame.setCursor(Cursor.getDefaultCursor());
 		});
 		to_single.setLocation(250, 350);
 		
-		restart = new Buttons(600, 200, "Restart", e -> {
+		restart = new MyButton(600, 200, "Restart", e -> {
 			hideMenu();
 			startGame();
 		});
@@ -65,6 +75,13 @@ public abstract class InGame extends JLayeredPane implements GameScene, MouseSha
 		add(to_single);
 		add(restart);
 		hideMenu();
+	}
+	
+	@Override
+	protected void paintComponent(Graphics g) {
+		// TODO Auto-generated method stub
+		super.paintComponent(g);
+		g.drawImage(image, 0, 0, null);
 	}
 	
 

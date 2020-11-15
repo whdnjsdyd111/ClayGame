@@ -4,22 +4,18 @@ import java.awt.Container;
 import java.awt.Image;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
-import java.io.IOException;
 
-import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
+import main.MainFrame;
+
 public interface MouseShape {
-	String MOUSE_SHAPE_PATH = "../resource/mouse_shape.png";
+	String MOUSE_SHAPE_PNG = "resource/mouse_shape.png";
 	
-	default void setMouseShape(Container cont, String file) {
-		Image image = null;
-		try {
-			image = ImageIO.read(getClass().getResource(file));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+	
+	default void setMouseShape(Container cont) {
+		Image image = new ImageIcon(MainFrame.class.getResource(MOUSE_SHAPE_PNG)).getImage();
 		
 		Image changeImage = image.getScaledInstance(100, 100, Image.SCALE_SMOOTH);
 		ImageIcon icon = new ImageIcon(changeImage);

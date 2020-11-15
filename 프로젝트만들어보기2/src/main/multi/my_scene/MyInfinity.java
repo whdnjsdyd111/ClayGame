@@ -1,6 +1,5 @@
 package main.multi.my_scene;
 
-import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -8,15 +7,17 @@ import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
 import java.nio.channels.SocketChannel;
 
-import javax.swing.JLabel;
-import javax.swing.border.LineBorder;
-
 import main.MainFrame;
 import main.common.Plate;
 import main.multi.AlertDialog;
 import main.resource.Audios;
 
 public class MyInfinity extends MultiMyGame {
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	
 	Thread start_infinity = null;
 	Thread start_time = null;
@@ -100,7 +101,7 @@ public class MyInfinity extends MultiMyGame {
 					
 					int height = (int) (Math.random() * 200) + 100;
 					
-					Plate plate = new Plate(height, Plate.PLATE_PNG);
+					Plate plate = new Plate(height);
 					claies.add(plate);
 					add(plate);
 					

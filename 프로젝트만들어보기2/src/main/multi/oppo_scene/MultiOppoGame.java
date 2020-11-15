@@ -14,6 +14,11 @@ import main.common.Plate;
 
 public abstract class MultiOppoGame extends Dialog implements GameScene  {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
 	MainFrame frame = null;
 	Set<Plate> claies = null;
 	JLabel game_time = null;
@@ -31,7 +36,7 @@ public abstract class MultiOppoGame extends Dialog implements GameScene  {
 		setLayout(null);
 		
 		game_time = new JLabel("00:00");		// 게임 타이틀 라벨
-		game_time.setBounds(400, 50, 200, 50);
+		game_time.setBounds(400, 50, 300, 50);
 		game_time.setFont(new Font("Consolas", Font.BOLD, 40));
 		add(game_time);
 		

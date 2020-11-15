@@ -14,13 +14,18 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 
 import main.MainFrame;
-import main.common.Buttons;
+import main.common.MyButton;
 import main.common.GameScene;
 import main.common.MouseShape;
 import main.common.Plate;
 import main.multi.AlertDialog;
 
 public abstract class MultiMyGame extends Dialog implements GameScene, MouseShape {
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	
 	MainFrame frame = null;
 	Set<Plate> claies = null;
@@ -42,8 +47,10 @@ public abstract class MultiMyGame extends Dialog implements GameScene, MouseShap
 		setBounds(100, 200, 900, 800);
 		setLayout(null);
 		
+		
+		
 		game_time = new JLabel("00:00");		// 게임 타이틀 라벨
-		game_time.setBounds(250, 50, 100, 50);
+		game_time.setBounds(250, 50, 300, 50);
 		game_time.setFont(new Font("Consolas", Font.BOLD, 40));
 		add(game_time);
 		
@@ -54,9 +61,9 @@ public abstract class MultiMyGame extends Dialog implements GameScene, MouseShap
 		
 		claies = Collections.synchronizedSet(new HashSet<Plate>());
 		
-		setMouseShape(this, "../" + MOUSE_SHAPE_PATH);
+		setMouseShape(this);
 		
-		to_room = new Buttons(300, 400, "Into Room", e -> {
+		to_room = new MyButton(300, 400, "Into Room", e -> {
 			frame.setCursor(Cursor.getDefaultCursor());
 			dispose();
 		});

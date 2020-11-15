@@ -14,12 +14,16 @@ import javax.swing.JLabel;
 
 import main.MainFrame;
 import main.common.Plate;
-import main.databases.ReloadDialog;
 import main.multi.AlertDialog;
 import main.resource.Audios;
 import main.single.Bullet;
 
 public class MyReload extends MultiMyGame {
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	
 	int round = 1;
 	JLabel round_label = null;
@@ -53,7 +57,7 @@ public class MyReload extends MultiMyGame {
 		super(frame, socketChannel);
 		
 		this.endScore_label = new JLabel();
-		endScore_label.setBounds(300, 300, 300, 50);
+		endScore_label.setBounds(250, 300, 400, 50);
 		endScore_label.setVisible(true);
 		endScore_label.setFont(new Font("Consolas", Font.BOLD, 40));
 		add(endScore_label);
@@ -65,7 +69,7 @@ public class MyReload extends MultiMyGame {
 		
 		round_label = new JLabel("1 Round Start!");
 		round_label.setFont(new Font("Consolas", Font.BOLD, 40));
-		round_label.setBounds(425, 250, 350, 60);
+		round_label.setBounds(275, 250, 350, 60);
 		add(round_label);
 		round_label.setVisible(false);
 		
@@ -115,11 +119,13 @@ public class MyReload extends MultiMyGame {
 				if(e.getKeyChar() == 'r' && reload.getState() == Thread.State.NEW) {
 					reload.start();
 					Audios.audio(Audios.RELOAD);
+					sendReload();
 				}
 				if(e.getKeyChar() == 'r' && reload.getState() == Thread.State.TERMINATED) {
 					reload = new Thread(reload_run);
 					reload.start();
 					Audios.audio(Audios.RELOAD);
+					sendReload();
 				}
 			}
 		});
@@ -159,7 +165,7 @@ public class MyReload extends MultiMyGame {
 							
 							int height = (int) (Math.random() * 200) + 100;
 							
-							Plate plate = new Plate(height, Plate.PLATE_PNG);
+							Plate plate = new Plate(height);
 							claies.add(plate);
 							add(plate);
 							
@@ -213,7 +219,7 @@ public class MyReload extends MultiMyGame {
 			
 			// frame.dialog = new ReloadDialog(frame, "reload mode rank", score + "");
 			
-			score = 0;
+			endGame();
 		};
 		
 		startGame();
@@ -230,7 +236,7 @@ public class MyReload extends MultiMyGame {
 	
 	@Override
 	public void endGame() {
-		endScore_label.setText("Finally Score : " + score);
+		endScore_label.setText("Final Score : " + score);
 		endScore_label.setVisible(true);
 		
 		try {
@@ -260,6 +266,28 @@ public class MyReload extends MultiMyGame {
 	}
 	
 	private void sendReload() {
-		// 재장전 데이터 보내기 TODO
+		try {
+			IntBuffer intBuffer = IntBuffer.wrap(new int[] { -2 });
+			ByteBuffer byteBuffer = ByteBuffer.allocate(intBuffer.capacity() * 4);
+			
+			byteBuffer.putInt(intBuffer.get(0));
+			byteBuffer.flip();
+			socketChannel.write(byteBuffer);
+			
+			System.out.println("[재장전 전송]");
+		} catch (Exception e) {
+			e.printStackTrace();
+			try {
+				System.out.println("[상대방과 통신 두절 : " + socketChannel.getRemoteAddress() + 
+						" : " + Thread.currentThread().getName() + "]");				
+				socketChannel.close();
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+			isEnd = true;
+			frame.setCursor(Cursor.getDefaultCursor());
+			frame.remove(this);
+			new AlertDialog(frame, AlertDialog.MSG_NET1);
+		}
 	}
 }

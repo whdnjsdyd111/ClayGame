@@ -10,6 +10,11 @@ import main.common.Plate;
 
 public class OppoInfinity extends MultiOppoGame {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
 	Thread start_infinity = null;
 	Thread start_time = null;
 	int minu = 0;
@@ -46,7 +51,7 @@ public class OppoInfinity extends MultiOppoGame {
 	public void create_clay(int height, int ran) {
 		new Thread(claies_group, () -> {
 			
-			Plate plate = new Plate(height, Plate.PLATE_PNG);
+			Plate plate = new Plate(height);
 			claies.add(plate);
 			add(plate);
 			

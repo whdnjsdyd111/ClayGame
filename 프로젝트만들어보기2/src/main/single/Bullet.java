@@ -8,6 +8,11 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
 public class Bullet extends JLabel {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	public Bullet(int x, int y) {
 		setBounds(x, y, 50, 75);
 		

@@ -5,6 +5,11 @@ import main.common.Plate;
 
 public class OppoTime extends MultiOppoGame {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	public OppoTime(MainFrame frame) {
 		super(frame);
 		
@@ -29,7 +34,7 @@ public class OppoTime extends MultiOppoGame {
 	public void create_clay(int height, int ran) {
 		new Thread(claies_group, () -> {
 			
-			Plate plate = new Plate(height, Plate.PLATE_PNG);
+			Plate plate = new Plate(height);
 			claies.add(plate);
 			add(plate);
 			

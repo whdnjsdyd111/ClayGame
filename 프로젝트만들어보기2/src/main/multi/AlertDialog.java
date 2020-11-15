@@ -2,18 +2,21 @@ package main.multi;
 
 import java.awt.Dialog;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Toolkit;
 
-import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
-import main.common.Buttons;
-
-import java.awt.Font;
+import main.common.MyButton;
 
 public class AlertDialog extends Dialog {
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	
 	public static final String MSG1 = "이미 존재하는 아이디입니다.";
 	public static final String MSG2 = "아이디는 영어와 숫자만 가능합니다.";
@@ -39,12 +42,12 @@ public class AlertDialog extends Dialog {
 		this.setLocation((screenSize.width - frameSize.width)/2, (screenSize.height - frameSize.height)/2); // 화면 중앙
 		
 		JLabel msgLabel = new JLabel(msg);
-		msgLabel.setFont(new Font("굴림", Font.BOLD, 15));
+		msgLabel.setFont(new Font("돋움", Font.BOLD, 15));
 		msgLabel.setBounds(10, 100, 430, 50);
 		msgLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		add(msgLabel);
 		
-		Buttons btn = new Buttons(75, 275, "OK", e -> {
+		MyButton btn = new MyButton(75, 275, "OK", e -> {
 			dispose();
 		});
 		add(btn);

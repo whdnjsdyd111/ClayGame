@@ -15,6 +15,7 @@ import javax.swing.JTextArea;
 import main.MainFrame;
 import main.multi.my_scene.MultiMyGame;
 import main.multi.my_scene.MyInfinity;
+import main.multi.my_scene.MyReload;
 import main.multi.my_scene.MyTime;
 import main.multi.oppo_scene.MultiOppoGame;
 import main.multi.oppo_scene.OppoInfinity;
@@ -25,19 +26,19 @@ public class Client {
 	SocketChannel socketChannel;
 	private String nickname;
 	private JLabel master_nickname;
-	private JTextArea textarea;
+	private JTextArea textArea;
 	private MainFrame frame;
 	private JLayeredPane joinedRoom;
-	private JComboBox<String[]> comboBox;
+	private JComboBox<String> comboBox;
 	
 	private MultiOppoGame oppo_scene = null;
 	private MultiMyGame my_scene = null;
 	
 	public Client(String ip, String nickname, JLabel master_nickname, JTextArea textarea, MainFrame frame, 
-			JLayeredPane joinedRoom, JComboBox<String[]> comboBox) {
+			JLayeredPane joinedRoom, JComboBox<String> comboBox) {
 		this.nickname = nickname;
 		this.master_nickname = master_nickname;
-		this.textarea = textarea;
+		this.textArea = textarea;
 		this.frame = frame;
 		this.joinedRoom = joinedRoom;
 		this.comboBox = comboBox;
@@ -102,13 +103,13 @@ public class Client {
 						
 						if(comboBox.getSelectedIndex() == 0) {
 							oppo_scene = new OppoTime(frame);
-							//my_scene = new MyTime(frame, socketChannel);
+							my_scene = new MyTime(frame, socketChannel);
 						} else if(comboBox.getSelectedIndex() == 1) {
 							oppo_scene = new OppoInfinity(frame);
-							//my_scene = new MyInfinity(frame, socketChannel);
+							my_scene = new MyInfinity(frame, socketChannel);
 						} else if(comboBox.getSelectedIndex() == 2) {
 							oppo_scene = new OppoReload(frame);
-							//my_scene = new MyReload(frame, socketChannel);
+							my_scene = new MyReload(frame, socketChannel);
 						}
 						
 						receiveGameInfo();
@@ -118,7 +119,8 @@ public class Client {
 					Charset charset = Charset.forName("UTF-8");
 					String data = charset.decode(byteBuffer).toString();	// 문자열 변환
 					System.out.println("[데이터 받음]");
-					textarea.setText(textarea.getText() + "\n" + data);
+					textArea.append("\n" + data);
+					textArea.setCaretPosition(textArea.getDocument().getLength());
 				} catch (Exception e) {
 					e.printStackTrace();
 					System.out.println("[서버 통신 안됨]");
@@ -219,11 +221,11 @@ public class Client {
 					int[] data = new int[intBuffer.capacity()];
 					intBuffer.get(data);
 					
-					if(data[0] == -1) {
+					if(data[0] == -1)
 						oppo_scene.endGame(data[1]);
-					} else if(data[0] == -2) {
+					else if(data[0] == -2)
 						oppo_scene.reload();
-					} else  if(data.length == 2)
+					else  if(data.length == 2)
 						oppo_scene.create_clay(data[0], data[1]);
 					else if(data.length == 3)
 						oppo_scene.receiveMousePoint(data[0], data[1]);

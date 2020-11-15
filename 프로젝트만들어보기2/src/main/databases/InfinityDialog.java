@@ -14,6 +14,11 @@ import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumnModel;
 
 public class InfinityDialog extends SingleDatabaseDialog {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	public InfinityDialog(JFrame frame, String name, String score) {
 		super(frame, name, score);
 	}
@@ -21,6 +26,11 @@ public class InfinityDialog extends SingleDatabaseDialog {
 	@Override
 	protected void getRank(String score) {
 		JTable table = new JTable(InfinityDAO.getInstance().getInfinity(score, my_rank), HEADERS) {
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+
 			@Override
 			public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
 				JComponent component = (JComponent) super.prepareRenderer(renderer, row, column);
@@ -29,6 +39,11 @@ public class InfinityDialog extends SingleDatabaseDialog {
 
 				return component;
 			}
+
+			@Override
+			public void setRowHeight(int rowHeight) {
+				super.setRowHeight(23);
+			}
 			
 			@Override
 			public boolean isCellEditable(int row, int column) {
@@ -36,7 +51,7 @@ public class InfinityDialog extends SingleDatabaseDialog {
 			}
 		};
 		JScrollPane scroll = new JScrollPane(table);
-		scroll.setBounds(new Rectangle(10, 35, 580, 500));
+		scroll.setBounds(new Rectangle(10, 40, 580, 508));
 		
 		DefaultTableCellRenderer dtcr = new DefaultTableCellRenderer();
 		dtcr.setHorizontalAlignment(SwingConstants.CENTER);

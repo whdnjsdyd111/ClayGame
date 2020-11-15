@@ -1,26 +1,22 @@
 package main.common;
 
-import java.awt.Image;
-import java.io.IOException;
-
-import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
+import main.MainFrame;
+
 public class Plate extends JLabel {
-	public static final String PLATE_PNG = "../resource/플레이트.png";
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	
-	public Plate(int height, String file) {
+	private static final String PLATE_PNG = "resource/플레이트.png";
+	private static final ImageIcon icon = new ImageIcon(MainFrame.class.getResource(PLATE_PNG));
+	
+	public Plate(int height) {
+		super(icon);
 		setBounds(0, height, 100, 50);
-		Image image = null;
-		try {
-			image = ImageIO.read(getClass().getResource(file));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		
-		Image changeImage = image.getScaledInstance(100, 50, Image.SCALE_SMOOTH);
-		ImageIcon icon = new ImageIcon(changeImage);
-		setIcon(icon);
 	}
+	
 }

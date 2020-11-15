@@ -1,6 +1,5 @@
 package main.multi.my_scene;
 
-import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Font;
 import java.awt.event.MouseEvent;
@@ -10,7 +9,6 @@ import java.nio.IntBuffer;
 import java.nio.channels.SocketChannel;
 
 import javax.swing.JLabel;
-import javax.swing.border.LineBorder;
 
 import main.MainFrame;
 import main.common.Plate;
@@ -19,14 +17,19 @@ import main.resource.Audios;
 
 public class MyTime extends MultiMyGame {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
 	private JLabel endScore_label;
 	
 	public MyTime(MainFrame frame, SocketChannel socketChannel) {
 		super(frame, socketChannel);
 		this.endScore_label = new JLabel();
-		endScore_label.setBounds(300, 300, 300, 50);
+		endScore_label.setBounds(250, 300, 400, 50);
 		endScore_label.setVisible(true);
-		endScore_label.setFont(new Font("휴먼편지체", Font.BOLD, 40));
+		endScore_label.setFont(new Font("Consolas", Font.BOLD, 40));
 		add(endScore_label);
 		
 		this.addMouseListener(new MouseListener() {
@@ -93,7 +96,7 @@ public class MyTime extends MultiMyGame {
 					
 					int height = (int) (Math.random() * 200) + 100;
 					
-					Plate plate = new Plate(height, Plate.PLATE_PNG);
+					Plate plate = new Plate(height);
 					claies.add(plate);
 					add(plate);
 					
@@ -146,7 +149,7 @@ public class MyTime extends MultiMyGame {
 	
 	@Override
 	public void endGame() {
-		endScore_label.setText("최종 점수 : " + score);
+		endScore_label.setText("Final Score : " + score);
 		endScore_label.setVisible(true);
 		
 		try {

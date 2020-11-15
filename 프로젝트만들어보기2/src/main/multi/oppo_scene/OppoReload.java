@@ -10,6 +10,11 @@ import main.single.Bullet;
 
 public class OppoReload extends MultiOppoGame {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
 	int round = 1;
 	JLabel round_label = null;
 	Bullet bullet[] = new Bullet[5];	// ÃÑ¾Ë 5¹ß
@@ -43,7 +48,7 @@ public class OppoReload extends MultiOppoGame {
 		
 		round_label = new JLabel("1 Round Start");
 		round_label.setFont(new Font("Consolas", Font.BOLD, 40));
-		round_label.setBounds(425, 250, 350, 60);
+		round_label.setBounds(275, 250, 350, 60);
 		add(round_label);
 		round_label.setVisible(false);
 		
@@ -72,9 +77,9 @@ public class OppoReload extends MultiOppoGame {
 	
 	@Override
 	public void create_clay(int height, int ran) {
-		new Thread(claies_group, () -> {
+		new Thread(() -> {
 			
-			Plate plate = new Plate(height, Plate.PLATE_PNG);
+			Plate plate = new Plate(height);
 			claies.add(plate);
 			add(plate);
 			

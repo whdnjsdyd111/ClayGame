@@ -10,6 +10,11 @@ import main.resource.Audios;
 
 public class InfinityMode extends InGame {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
 	Thread start_infinity = null;
 	Thread start_time = null;
 	int minu = 0;
@@ -91,7 +96,7 @@ public class InfinityMode extends InGame {
 					
 					int height = (int) (Math.random() * 300);
 					
-					Plate plate = new Plate(height, Plate.PLATE_PNG);
+					Plate plate = new Plate(height);
 					claies.add(plate);
 					add(plate);
 					

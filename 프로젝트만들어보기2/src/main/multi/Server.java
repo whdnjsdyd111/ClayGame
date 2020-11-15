@@ -14,6 +14,7 @@ import javax.swing.JLabel;
 import javax.swing.JTextArea;
 
 import main.MainFrame;
+import main.multi.my_scene.MultiMyGame;
 import main.multi.oppo_scene.MultiOppoGame;
 import main.multi.oppo_scene.OppoInfinity;
 import main.multi.oppo_scene.OppoTime;
@@ -26,11 +27,13 @@ public class Server {
 	private JLabel oppo_nickname;
 	private JTextArea textArea;
 	private JButton startBtn;
-	private JComboBox<String[]> comboBox;
+	private JComboBox<String> comboBox;
 	static final int PORT = 7000;
 	private MultiOppoGame oppo_scene = null;
+	private MultiMyGame multi = null;
 	
-	public Server(MainFrame frame, String nickname, JLabel oppo_nickname, JTextArea textArea, JButton startBtn, JComboBox<String[]> comboBox) {
+	public Server(MainFrame frame, String nickname, JLabel oppo_nickname, JTextArea textArea, JButton startBtn, 
+			JComboBox<String> comboBox, MultiMyGame multi) {
 		// 서버 시작
 		this.frame = frame;
 		this.nickname = nickname;
@@ -38,6 +41,7 @@ public class Server {
 		this.textArea = textArea;
 		this.startBtn = startBtn;
 		this.comboBox = comboBox;
+		this.multi = multi;
 		
 		try {
 			serverSocketChannel = ServerSocketChannel.open();
@@ -110,14 +114,14 @@ public class Server {
 					
 					if(byteBuffer.get(0) == 0) {
 						// 게임 시작을 클라이언트에 알려 준후 클라이언트가 게임을 시작했다는 것을 받고 IntBuffer 시작
-//						if(comboBox.getSelectedIndex() == 0)
-//							oppo_scene = new OppoTime(frame);
-//						if(comboBox.getSelectedIndex() == 1)
-//							oppo_scene = new OppoInfinity(frame);
-//						if(comboBox.getSelectedIndex() == 2)
-//							oppo_scene = new OppoInfinity(frame);
-//						receiveGameInfo();
-//						
+						if(comboBox.getSelectedIndex() == 0)
+							oppo_scene = new OppoTime(frame);
+						if(comboBox.getSelectedIndex() == 1)
+							oppo_scene = new OppoInfinity(frame);
+						if(comboBox.getSelectedIndex() == 2)
+							oppo_scene = new OppoInfinity(frame);
+						receiveGameInfo();
+						
 						break;
 					}
 					
@@ -125,7 +129,8 @@ public class Server {
 					String data = charset.decode(byteBuffer).toString();
 					
 					System.out.println("[데이터 받음] " + data);
-					textArea.setText(textArea.getText() + "\n" + data);
+					textArea.append("\n" + data);
+					textArea.setCaretPosition(textArea.getDocument().getLength());
 				} catch (Exception e) {
 					e.printStackTrace();
 					try {
@@ -277,14 +282,15 @@ public class Server {
 					int[] data = new int[intBuffer.capacity()];
 					intBuffer.get(data);
 					
-					if(data[0] == -1) {
+					if(data[0] == -1)
 						oppo_scene.endGame(data[1]);
-					} else if(data.length == 2)
+					else if(data[0] == -2)
+						oppo_scene.reload();
+					else  if(data.length == 2)
 						oppo_scene.create_clay(data[0], data[1]);
 					else if(data.length == 3)
 						oppo_scene.receiveMousePoint(data[0], data[1]);
 						
-					
 				} catch (Exception e) {
 					e.printStackTrace();
 					try {

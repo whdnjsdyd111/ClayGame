@@ -11,9 +11,14 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 
-public class Buttons extends JButton {
+public class MyButton extends JButton {
 
-	public static final String color_hex[][] = {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
+	public static final String COLOR_HEX[][] = {
 			{"#00BFF", "#0AC9FF", "#14D3FF"},	// 밝은 하늘
 			{"#96A5FF", "#A0AFFF", "#AAB9FF"},	// 매우 연한 남색
 			{"#7B68EE", "#8572EE", "#8F7CEE"},	// 연한 남색
@@ -45,12 +50,12 @@ public class Buttons extends JButton {
 //	private final int LIGHT_GRAY = 12;
 //	private final int DARK_GRAY = 13;
 	
-	public Buttons(int x, int y, String name, ActionListener i) {
+	public MyButton(int x, int y, String name, ActionListener i) {
 		setText(name);
 		setSize(300, 60);
 		setLocation(x, y);
-		setFont(new Font("Consolas", Font.BOLD, 30));
-		this.addActionListener(i);
+		setFont(new Font("D2 Coding", Font.BOLD, 30));
+		addActionListener(i);
 	}
 
 	protected void paintComponent(Graphics g) {
@@ -83,6 +88,6 @@ public class Buttons extends JButton {
 	}
 
 	private String RandomColor() {
-		return color_hex[(int) (Math.random() * 14)][(int) (Math.random() * 3)];
+		return COLOR_HEX[(int) (Math.random() * 14)][(int) (Math.random() * 3)];
 	}
 }
