@@ -12,19 +12,18 @@ import java.util.Set;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
-import javax.swing.JLayeredPane;
 
 import main.MainFrame;
 import main.common.Buttons;
 import main.common.GameScene;
 import main.common.MouseShape;
+import main.common.Plate;
 import main.multi.AlertDialog;
-import main.multi.oppo_scene.MultiOppoGame;
 
 public abstract class MultiMyGame extends Dialog implements GameScene, MouseShape {
 	
 	MainFrame frame = null;
-	Set<JLabel> claies = null;
+	Set<Plate> claies = null;
 	JLabel game_time = null;
 	JLabel game_score = null;
 	JButton to_room = null;
@@ -45,19 +44,19 @@ public abstract class MultiMyGame extends Dialog implements GameScene, MouseShap
 		
 		game_time = new JLabel("00:00");		// 게임 타이틀 라벨
 		game_time.setBounds(250, 50, 100, 50);
-		game_time.setFont(new Font("휴먼편지체", Font.BOLD, 40));
+		game_time.setFont(new Font("Consolas", Font.BOLD, 40));
 		add(game_time);
 		
 		game_score = new JLabel("Score " + score);
 		game_score.setBounds(500, 50, 200, 50);
-		game_score.setFont(new Font("휴먼편지체", Font.BOLD, 40));
+		game_score.setFont(new Font("Consolas", Font.BOLD, 40));
 		add(game_score);
 		
-		claies = Collections.synchronizedSet(new HashSet<JLabel>());
+		claies = Collections.synchronizedSet(new HashSet<Plate>());
 		
-		setMouseShape(this, 0);
+		setMouseShape(this, "../" + MOUSE_SHAPE_PATH);
 		
-		to_room = new Buttons(300, 400, "방으로", e -> {
+		to_room = new Buttons(300, 400, "Into Room", e -> {
 			frame.setCursor(Cursor.getDefaultCursor());
 			dispose();
 		});
@@ -81,7 +80,7 @@ public abstract class MultiMyGame extends Dialog implements GameScene, MouseShap
 	
 	protected void sendMousePoint(int x, int y) {
 		try {
-			IntBuffer intBuffer = IntBuffer.wrap(new int[] { x, y });
+			IntBuffer intBuffer = IntBuffer.wrap(new int[] { x, y, 0 });
 			ByteBuffer byteBuffer = ByteBuffer.allocate(intBuffer.capacity() * 4);
 			for (int i = 0; i < intBuffer.capacity(); i++) {
 				byteBuffer.putInt(intBuffer.get(i));

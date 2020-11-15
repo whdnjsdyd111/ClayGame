@@ -1,6 +1,5 @@
 package main.single;
 
-import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -8,9 +7,9 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 import javax.swing.JLabel;
-import javax.swing.border.LineBorder;
 
 import main.MainFrame;
+import main.common.Plate;
 import main.databases.ReloadDialog;
 import main.resource.Audios;
 
@@ -46,13 +45,13 @@ public class ReloadMode extends InGame {
 		super(frame);
 		
 		for (int i = 0; i < bullet.length; i++) {
-			bullet[i] = new Bullet(600 - i * 80);
+			bullet[i] = new Bullet(1100, 600 - i * 80);
 			add(bullet[i]);
 		}
 		
-		round_label = new JLabel("1 라운드 시작");
-		round_label.setFont(new Font("HY얕은샘물M", Font.PLAIN, 40));
-		round_label.setBounds(500, 250, 170, 60);
+		round_label = new JLabel("1 Round Start");
+		round_label.setFont(new Font("Consolas", Font.BOLD, 40));
+		round_label.setBounds(425, 250, 350, 60);
 		add(round_label);
 		round_label.setVisible(false);
 		
@@ -120,13 +119,13 @@ public class ReloadMode extends InGame {
 				claies_group = new ThreadGroup("clay group");
 				claies_group.setDaemon(true);
 				
-				game_time.setText(round + " 라운드");
+				game_time.setText(round + " Round");
 				
-				round_label.setText(round + " 라운드 시작!");
+				round_label.setText(round + " Round Start!");
 				round_label.setVisible(true);
 				try { Thread.sleep(1000); } catch (InterruptedException e) {}
 				for (int i = 3; i > 0; i--) {
-					round_label.setText(i + "");
+					round_label.setText("       " + i);
 					try { Thread.sleep(1000); } catch (InterruptedException e) {}
 				}
 				round_label.setVisible(false);
@@ -145,11 +144,9 @@ public class ReloadMode extends InGame {
 							
 							int height = (int) (Math.random() * 300);
 							
-							JLabel clay_label = new JLabel("clay");
-							clay_label.setBounds(0, height, 100, 50);
-							clay_label.setBorder(new LineBorder(Color.BLUE, 3));
-							claies.add(clay_label);
-							add(clay_label);
+							Plate plate = new Plate(height, Plate.PLATE_PNG);
+							claies.add(plate);
+							add(plate);
 							
 							int ran = (int) (Math.random() * 2);
 							// 1 라운드 속도 1.5
@@ -159,27 +156,27 @@ public class ReloadMode extends InGame {
 							
 							if(ran == 0) {
 								for (float i = -100; i < 1200; i+=speed) {
-									clay_label.setLocation((int) i, getHeight(i, height));
+									plate.setLocation((int) i, getHeight(i, height));
 									try {
 										Thread.sleep(1);
 									} catch (InterruptedException e) {
-										claies.remove(clay_label);
-										remove(clay_label);
+										claies.remove(plate);
+										remove(plate);
 									}
 								}
 							} else {
 								for (float i = 1200; i > -100; i-=speed) {
-									clay_label.setLocation((int) i, getHeight(i, height));
+									plate.setLocation((int) i, getHeight(i, height));
 									try {
 										Thread.sleep(1);
 									} catch (InterruptedException e) {
-										claies.remove(clay_label);
-										remove(clay_label);
+										claies.remove(plate);
+										remove(plate);
 									}
 								}
 							}
-							claies.remove(clay_label);
-							remove(clay_label);
+							claies.remove(plate);
+							remove(plate);
 							
 						}).start();
 					}
@@ -199,7 +196,7 @@ public class ReloadMode extends InGame {
 			repaint();
 			showMenu();
 			
-			frame.dialog = new ReloadDialog(frame, "reload mode rank", score + "");
+			frame.dialog = new ReloadDialog(frame, "Reload Mode Rank", score + "");
 			
 			score = 0;
 		};

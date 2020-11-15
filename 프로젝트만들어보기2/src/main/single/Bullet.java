@@ -8,8 +8,8 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
 public class Bullet extends JLabel {
-	public Bullet(int y) {
-		setBounds(1100, y, 50, 75);
+	public Bullet(int x, int y) {
+		setBounds(x, y, 50, 75);
 		
 		Image image = null;
 		try {

@@ -12,7 +12,6 @@ import javax.swing.JFrame;
 import main.databases.SingleDatabaseDialog;
 import main.mainPane.MainPane;
 import main.multi.FindPasswdPane;
-import main.multi.MultiGamePane;
 import main.multi.MultiLoginPane;
 import main.multi.MultiRegPane;
 import main.single.InfinityMode;
@@ -21,6 +20,11 @@ import main.single.SingleGamePane;
 import main.single.TimeMode;
 
 public class MainFrame extends JFrame {
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	
 	public CardLayout card = null;
 	public MainPane main = null;
@@ -72,6 +76,6 @@ public class MainFrame extends JFrame {
 	}
 	
 	public static void main(String[] args) {
-		MainFrame frame = new MainFrame();
+		new MainFrame();
 	}
 }

@@ -111,7 +111,7 @@ public class JoinedRoom extends JLayeredPane {
 		});
 		add(to_multi);
 		
-		Buttons startBtn = new Buttons(825, 500, "게임 시작", e -> {
+		Buttons startBtn = new Buttons(825, 500, "Game Start", e -> {
 			
 		});
 		startBtn.setEnabled(false);

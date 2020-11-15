@@ -2,7 +2,6 @@ package main.multi;
 
 import java.awt.Font;
 
-import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JTextField;
@@ -47,7 +46,7 @@ public class MultiLoginPane extends JLayeredPane {
 		pw_label.setBounds(250, 400, 150, 50);
 		add(pw_label);
 		
-		Buttons loginBtn = new Buttons(450, 550, "로그인", e -> {
+		Buttons loginBtn = new Buttons(450, 550, "Login", e -> {
 			String id = tf_id.getText();
 			String pw = tf_pw.getText();
 			
@@ -67,17 +66,17 @@ public class MultiLoginPane extends JLayeredPane {
 		});
 		add(loginBtn);
 		
-		Buttons regBtn = new Buttons(100, 550, "회원 가입", e -> {
+		Buttons regBtn = new Buttons(100, 550, "Sign Up", e -> {
 			frame.card.show(frame.getContentPane(), "multiReg");
 		});
 		add(regBtn);
 		
-		Buttons findBtn = new Buttons(800, 550, "비번 찾기", e -> {
+		Buttons findBtn = new Buttons(800, 550, "Find Password", e -> {
 			frame.card.show(frame.getContentPane(), "findPasswd");
 		});
 		add(findBtn);
 		
-		Buttons to_main = new Buttons(450, 650, "메인으로", e -> {
+		Buttons to_main = new Buttons(450, 650, "Main", e -> {
 			frame.card.show(frame.getContentPane(), "main");
 		});
 		add(to_main);

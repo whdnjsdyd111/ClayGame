@@ -54,7 +54,7 @@ public class MultiRegPane extends JLayeredPane {
 		pw_label.setBounds(250, 400, 150, 50);
 		add(pw_label);
 		
-		Buttons regBtn = new Buttons(100, 550, "회원 가입", e -> {
+		Buttons regBtn = new Buttons(650, 550, "Sign Up", e -> {
 			if(tf_id.getText().equals("") || tf_pw.getText().equals("") || tf_nick.getText().equals("")) {
 				new AlertDialog(frame, AlertDialog.MSG_EMPTY);
 				return;
@@ -89,13 +89,9 @@ public class MultiRegPane extends JLayeredPane {
 			MemberDAO.getInstance().insert(id, pw, nick);
 			frame.card.show(frame.getContentPane(), "multiLogin");
 		});
-		
-		regBtn.setLocation(500, 550);
 		add(regBtn);
 		
-		JButton back_btn = new JButton("뒤로 가기");
-		back_btn.setBounds(270, 550, 100, 60);
-		back_btn.addActionListener(e -> {
+		Buttons back_btn = new Buttons(250, 550, "Back", e -> {
 			frame.card.show(frame.getContentPane(), "multiLogin");
 		});
 		add(back_btn);

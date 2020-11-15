@@ -6,7 +6,6 @@ import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
 import java.nio.channels.SocketChannel;
 import java.nio.charset.Charset;
-import java.util.Arrays;
 
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -14,8 +13,13 @@ import javax.swing.JLayeredPane;
 import javax.swing.JTextArea;
 
 import main.MainFrame;
+import main.multi.my_scene.MultiMyGame;
+import main.multi.my_scene.MyInfinity;
+import main.multi.my_scene.MyTime;
 import main.multi.oppo_scene.MultiOppoGame;
 import main.multi.oppo_scene.OppoInfinity;
+import main.multi.oppo_scene.OppoReload;
+import main.multi.oppo_scene.OppoTime;
 
 public class Client {
 	SocketChannel socketChannel;
@@ -27,6 +31,7 @@ public class Client {
 	private JComboBox<String[]> comboBox;
 	
 	private MultiOppoGame oppo_scene = null;
+	private MultiMyGame my_scene = null;
 	
 	public Client(String ip, String nickname, JLabel master_nickname, JTextArea textarea, MainFrame frame, 
 			JLayeredPane joinedRoom, JComboBox<String[]> comboBox) {
@@ -93,8 +98,20 @@ public class Client {
 						continue;
 					} else if(byteBuffer.get(0) == 3) {
 						System.out.println("[게임 시작]");
+						sendGameStart();
+						
+						if(comboBox.getSelectedIndex() == 0) {
+							oppo_scene = new OppoTime(frame);
+							//my_scene = new MyTime(frame, socketChannel);
+						} else if(comboBox.getSelectedIndex() == 1) {
+							oppo_scene = new OppoInfinity(frame);
+							//my_scene = new MyInfinity(frame, socketChannel);
+						} else if(comboBox.getSelectedIndex() == 2) {
+							oppo_scene = new OppoReload(frame);
+							//my_scene = new MyReload(frame, socketChannel);
+						}
+						
 						receiveGameInfo();
-						oppo_scene = new OppoInfinity(frame);
 						break;
 					}
 					
@@ -119,6 +136,20 @@ public class Client {
 			ByteBuffer byteBuffer = charset.encode(data);
 			socketChannel.write(byteBuffer);	// 서버로 데이터 보내기
 			System.out.println("[보내기 완료]");
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("[서버 통신 안됨]");
+			stopClient();
+			new AlertDialog(frame, AlertDialog.MSG_NET);
+		}
+	}
+	
+	public void sendGameStart() {
+		try {
+			ByteBuffer byteBuffer = ByteBuffer.wrap(new byte[] { (byte) 0 });
+			socketChannel.write(byteBuffer);
+			
+			System.out.println("[클라이언트 게임 시작 보내기 완료]");
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.out.println("[서버 통신 안됨]");
@@ -190,9 +221,9 @@ public class Client {
 					
 					if(data[0] == -1) {
 						oppo_scene.endGame(data[1]);
-					} else if(data[1] == 0 || data[1] == 1)
+					} else if(data.length == 2)
 						oppo_scene.create_clay(data[0], data[1]);
-					else
+					else if(data.length == 3)
 						oppo_scene.receiveMousePoint(data[0], data[1]);
 						
 					

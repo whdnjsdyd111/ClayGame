@@ -1,14 +1,10 @@
 package main.single;
 
-import java.awt.Color;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
-import javax.swing.JLabel;
-import javax.swing.border.LineBorder;
-
 import main.MainFrame;
-import main.databases.SingleDatabaseDialog;
+import main.common.Plate;
 import main.databases.TimeDialog;
 import main.resource.Audios;
 
@@ -80,37 +76,35 @@ public class TimeMode extends InGame {
 					
 					int height = (int) (Math.random() * 300);
 					
-					JLabel clay_label = new JLabel("clay");
-					clay_label.setBounds(0, height, 100, 50);
-					clay_label.setBorder(new LineBorder(Color.BLUE, 3));
-					claies.add(clay_label);
-					add(clay_label);
+					Plate plate = new Plate(height, Plate.PLATE_PNG);
+					claies.add(plate);
+					add(plate);
 					
 					int ran = (int) (Math.random() * 2);
 					
 					if(ran == 0) {
 						for (int i = -100; i < 1200; i+=2) {
-							clay_label.setLocation(i, getHeight(i, height));
+							plate.setLocation(i, getHeight(i, height));
 							try {
 								Thread.sleep(1);
 							} catch (InterruptedException e) {
-								claies.remove(clay_label);
-								remove(clay_label);
+								claies.remove(plate);
+								remove(plate);
 							}
 						}
 					} else {
 						for (int i = 1200; i > -100; i-=2) {
-							clay_label.setLocation(i, getHeight(i, height));
+							plate.setLocation(i, getHeight(i, height));
 							try {
 								Thread.sleep(1);
 							} catch (InterruptedException e) {
-								claies.remove(clay_label);
-								remove(clay_label);
+								claies.remove(plate);
+								remove(plate);
 							}
 						}
 					}
-					claies.remove(clay_label);
-					remove(clay_label);
+					claies.remove(plate);
+					remove(plate);
 					
 				}).start();
 			}
@@ -119,7 +113,7 @@ public class TimeMode extends InGame {
 			repaint();
 			showMenu();
 			isEnd = false;
-			frame.dialog = new TimeDialog(frame, "time mode rank", score + "");
+			frame.dialog = new TimeDialog(frame, "Time Mode Rank", score + "");
 			score = 0;
 		};
 	}

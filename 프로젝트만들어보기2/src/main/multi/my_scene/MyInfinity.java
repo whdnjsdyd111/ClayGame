@@ -12,6 +12,7 @@ import javax.swing.JLabel;
 import javax.swing.border.LineBorder;
 
 import main.MainFrame;
+import main.common.Plate;
 import main.multi.AlertDialog;
 import main.resource.Audios;
 
@@ -99,11 +100,9 @@ public class MyInfinity extends MultiMyGame {
 					
 					int height = (int) (Math.random() * 200) + 100;
 					
-					JLabel clay_label = new JLabel("clay");
-					clay_label.setBounds(0, height, 100, 50);
-					clay_label.setBorder(new LineBorder(Color.BLUE, 3));
-					claies.add(clay_label);
-					add(clay_label);
+					Plate plate = new Plate(height, Plate.PLATE_PNG);
+					claies.add(plate);
+					add(plate);
 					
 					int ran = (int) (Math.random() * 2);
 					float speed = (float) (minu > 0 ? minu * 1.5 : 0);
@@ -111,35 +110,35 @@ public class MyInfinity extends MultiMyGame {
 					
 					if(ran == 0) {
 						for (float i = -100; i < 900; i+=(2 + speed)) {
-							clay_label.setLocation((int) i, getHeight(i, height));
+							plate.setLocation((int) i, getHeight(i, height));
 							try {
 								Thread.sleep(1);
 							} catch (InterruptedException e) {
-								claies.remove(clay_label);
-								remove(clay_label);
+								claies.remove(plate);
+								remove(plate);
 							}
 						}
 					} else {
 						for (float i = 900; i > -100; i-=(2 + speed)) {
-							clay_label.setLocation((int) i, getHeight(i, height));
+							plate.setLocation((int) i, getHeight(i, height));
 							try {
 								Thread.sleep(1);
 							} catch (InterruptedException e) {
-								claies.remove(clay_label);
-								remove(clay_label);
+								claies.remove(plate);
+								remove(plate);
 							}
 						}
 					}
 
-					if(clay_label.isVisible() && score != 0) {
+					if(plate.isVisible() && score != 0) {
 						changeText(--score);
 						
 						if(score == 0)
 							start_infinity.interrupt();
 					}
 					
-					claies.remove(clay_label);
-					remove(clay_label);
+					claies.remove(plate);
+					remove(plate);
 					
 				}).start();
 			}
@@ -150,6 +149,8 @@ public class MyInfinity extends MultiMyGame {
 	
 	@Override
 	public void startGame() {
+		score = 10;
+		minu = 0;
 		frame.setCursor(frame.blankCursor);
 		game_score.setText("Score 10");
 		start_time = new Thread(time_start, "Time Start");
@@ -157,8 +158,6 @@ public class MyInfinity extends MultiMyGame {
 		
 		start_time.start();
 		start_infinity.start();
-		score = 10;
-		minu = 0;
 	}
 	
 	private void changeText(int score) {
@@ -184,7 +183,7 @@ public class MyInfinity extends MultiMyGame {
 			byteBuffer.flip();
 			socketChannel.write(byteBuffer);
 			
-			System.out.println("[게임 끝남 전송, 점수 전송]");
+			System.out.println("[게임 끝남 전송, 무한 모드 점수 전송]");
 		} catch (Exception e) {
 			e.printStackTrace();
 			try {

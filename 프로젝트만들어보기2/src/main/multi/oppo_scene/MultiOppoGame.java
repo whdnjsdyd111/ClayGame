@@ -1,25 +1,21 @@
 package main.multi.oppo_scene;
 
-import java.awt.Color;
-import java.awt.Cursor;
 import java.awt.Dialog;
 import java.awt.Font;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.swing.JButton;
 import javax.swing.JLabel;
-import javax.swing.border.LineBorder;
 
 import main.MainFrame;
-import main.common.Buttons;
 import main.common.GameScene;
+import main.common.Plate;
 
 public abstract class MultiOppoGame extends Dialog implements GameScene  {
 	
 	MainFrame frame = null;
-	Set<JLabel> claies = null;
+	Set<Plate> claies = null;
 	JLabel game_time = null;
 	JLabel game_score = null;
 	boolean isEnd = false;
@@ -36,16 +32,16 @@ public abstract class MultiOppoGame extends Dialog implements GameScene  {
 		
 		game_time = new JLabel("00:00");		// 게임 타이틀 라벨
 		game_time.setBounds(400, 50, 200, 50);
-		game_time.setFont(new Font("휴먼편지체", Font.BOLD, 40));
+		game_time.setFont(new Font("Consolas", Font.BOLD, 40));
 		add(game_time);
 		
 		game_score = new JLabel();
 		game_score.setBounds(400, 350, 200, 50);
-		game_score.setFont(new Font("휴먼편지체", Font.BOLD, 40));
+		game_score.setFont(new Font("Consolas", Font.BOLD, 40));
 		game_score.setVisible(false);
 		add(game_score);
 		
-		claies = Collections.synchronizedSet(new HashSet<JLabel>());
+		claies = Collections.synchronizedSet(new HashSet<Plate>());
 		claies_group = new ThreadGroup("clay group");
 		claies_group.setDaemon(true);
 		

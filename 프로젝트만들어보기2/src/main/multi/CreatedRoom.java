@@ -3,11 +3,11 @@ package main.multi;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
@@ -18,14 +18,16 @@ import javax.swing.border.LineBorder;
 
 import main.MainFrame;
 import main.common.Buttons;
+import main.multi.my_scene.MultiMyGame;
 import main.multi.my_scene.MyInfinity;
-
-import javax.swing.JButton;
+import main.multi.my_scene.MyReload;
+import main.multi.my_scene.MyTime;
 
 public class CreatedRoom extends JLayeredPane {
 	
 	MainFrame frame = null;
 	Server server = null;
+	MultiMyGame multi = null;
 	
 	public CreatedRoom(MainFrame frame, String nickname) {
 		this.frame = frame;
@@ -61,13 +63,6 @@ public class CreatedRoom extends JLayeredPane {
 		oppo_nickname.setBounds(800, 380, 350, 20);
 		add(oppo_nickname);
 		
-		Buttons startBtn = new Buttons(825, 500, "게임 시작", e -> {
-			server.send((byte) 3);
-			new MyInfinity(frame, server.socketChannel);
-		});
-		// startBtn.setEnabled(false);
-		add(startBtn);
-		
 		JComboBox<String[]> comboBox = new JComboBox<>();
 		comboBox.setModel(new DefaultComboBoxModel(new String[] {"시간 제한 모드", "무한 모드", "장전 모드"}));
 		comboBox.setBounds(825, 580, 300, 25);
@@ -83,7 +78,19 @@ public class CreatedRoom extends JLayeredPane {
 		});
 		add(comboBox);
 		
-		server = new Server(nickname, oppo_nickname, textArea, startBtn, comboBox);
+		Buttons startBtn = new Buttons(825, 500, "Game Start", e -> {
+			server.send((byte) 3);
+			if(comboBox.getSelectedIndex() == 0)
+				multi = new MyTime(frame, server.socketChannel);
+			if(comboBox.getSelectedIndex() == 1)
+				multi = new MyInfinity(frame, server.socketChannel);
+			if(comboBox.getSelectedIndex() == 2)
+				multi = new MyReload(frame, server.socketChannel);
+		});
+		// startBtn.setEnabled(false);
+		add(startBtn);
+		
+		server = new Server(frame, nickname, oppo_nickname, textArea, startBtn, comboBox);
 		
 		JTextField tf_chat = new JTextField();
 		tf_chat.setBorder(new LineBorder(Color.BLACK, 3));

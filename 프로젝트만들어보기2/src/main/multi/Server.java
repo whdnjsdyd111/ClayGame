@@ -13,20 +13,26 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JTextArea;
 
-import javafx.beans.binding.StringBinding;
+import main.MainFrame;
+import main.multi.oppo_scene.MultiOppoGame;
+import main.multi.oppo_scene.OppoInfinity;
+import main.multi.oppo_scene.OppoTime;
 
 public class Server {
 	ServerSocketChannel serverSocketChannel;
 	SocketChannel socketChannel;
+	private MainFrame frame;
 	private String nickname;
 	private JLabel oppo_nickname;
 	private JTextArea textArea;
 	private JButton startBtn;
 	private JComboBox<String[]> comboBox;
 	static final int PORT = 7000;
+	private MultiOppoGame oppo_scene = null;
 	
-	public Server(String nickname, JLabel oppo_nickname, JTextArea textArea, JButton startBtn, JComboBox<String[]> comboBox) {
+	public Server(MainFrame frame, String nickname, JLabel oppo_nickname, JTextArea textArea, JButton startBtn, JComboBox<String[]> comboBox) {
 		// 서버 시작
+		this.frame = frame;
 		this.nickname = nickname;
 		this.oppo_nickname = oppo_nickname;
 		this.textArea = textArea;
@@ -104,6 +110,15 @@ public class Server {
 					
 					if(byteBuffer.get(0) == 0) {
 						// 게임 시작을 클라이언트에 알려 준후 클라이언트가 게임을 시작했다는 것을 받고 IntBuffer 시작
+//						if(comboBox.getSelectedIndex() == 0)
+//							oppo_scene = new OppoTime(frame);
+//						if(comboBox.getSelectedIndex() == 1)
+//							oppo_scene = new OppoInfinity(frame);
+//						if(comboBox.getSelectedIndex() == 2)
+//							oppo_scene = new OppoInfinity(frame);
+//						receiveGameInfo();
+//						
+						break;
 					}
 					
 					Charset charset = Charset.forName("UTF-8");
@@ -161,6 +176,7 @@ public class Server {
 			socketChannel.write(byteBuffer);
 			
 			System.out.println("[게임 종류 보내기 완료]");
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 			try {
@@ -240,5 +256,49 @@ public class Server {
 		textArea.setText(textArea.getText() + "\n" + oppo_nickname.getText() + "님이 나가셨습니다.");
 		oppo_nickname.setText("");
 		startBtn.setEnabled(false);
+	}
+	
+	private void receiveGameInfo() {
+		System.out.println("[게임 정보 받기 시작]");
+		new Thread(() -> {
+			while(true) {
+				try {
+					ByteBuffer byteBuffer = ByteBuffer.allocate(100);
+					
+					// 서버 비정상적으로 종료됐을 때 IOException 발생
+					int readByteCount = socketChannel.read(byteBuffer);
+					
+					// 서버 정상적으로 Socket close를 호출 했을 경우
+					if(readByteCount == -1)
+						throw new IOException();
+
+					byteBuffer.flip();
+					IntBuffer intBuffer = byteBuffer.asIntBuffer();
+					int[] data = new int[intBuffer.capacity()];
+					intBuffer.get(data);
+					
+					if(data[0] == -1) {
+						oppo_scene.endGame(data[1]);
+					} else if(data.length == 2)
+						oppo_scene.create_clay(data[0], data[1]);
+					else if(data.length == 3)
+						oppo_scene.receiveMousePoint(data[0], data[1]);
+						
+					
+				} catch (Exception e) {
+					e.printStackTrace();
+					try {
+						System.out.println("[상대방과 통신 두절 : " + socketChannel.getRemoteAddress() + 
+								" : " + Thread.currentThread().getName() + "]");						
+						socketChannel.close();
+						connect();
+					} catch (Exception e2) {
+						e2.printStackTrace();
+					}
+					oppout();
+					break;
+				}
+			}
+		}).start();
 	}
 }

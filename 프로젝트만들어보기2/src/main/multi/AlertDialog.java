@@ -8,6 +8,9 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
+
+import main.common.Buttons;
+
 import java.awt.Font;
 
 public class AlertDialog extends Dialog {
@@ -41,12 +44,11 @@ public class AlertDialog extends Dialog {
 		msgLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		add(msgLabel);
 		
-		JButton btn = new JButton("È®ÀÎ");
-		btn.setBounds(175, 275, 100, 50);
-		add(btn);
-		btn.addActionListener(e -> {
+		Buttons btn = new Buttons(75, 275, "OK", e -> {
 			dispose();
 		});
+		add(btn);
+		
 		
 		setResizable(false);
 		setLayout(null);

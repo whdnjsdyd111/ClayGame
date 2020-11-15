@@ -12,61 +12,32 @@ import javax.swing.JLabel;
 
 public interface MouseShape {
 	String MOUSE_SHAPE_PATH = "../resource/mouse_shape.png";
-
-	default void setMouseShape(Container cont) {
-		Image image = null;
-		try {
-			image = ImageIO.read(getClass().getResource(MOUSE_SHAPE_PATH));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		
-		Image changeImage = image.getScaledInstance(100, 100, Image.SCALE_SMOOTH);
-		ImageIcon icon = new ImageIcon(changeImage);
-		JLabel label = new JLabel(icon);
-		label.setSize(100, 100);
-		
-		cont.add(label);
-		
-		cont.addMouseMotionListener(new MouseMotionListener() {
-			
-			@Override
-			public void mouseMoved(MouseEvent e) {
-				label.setBounds(e.getX() - 50, e.getY() - 50, label.getWidth(), label.getHeight());
-			}
-			
-			@Override
-			public void mouseDragged(MouseEvent e) {
-				label.setBounds(e.getX() - 50, e.getY() - 50, label.getWidth(), label.getHeight());
-			}
-		});
-	}
 	
-	default void setMouseShape(Container cont, int temp) {
+	default void setMouseShape(Container cont, String file) {
 		Image image = null;
 		try {
-			image = ImageIO.read(getClass().getResource("../" + MOUSE_SHAPE_PATH));
+			image = ImageIO.read(getClass().getResource(file));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		
 		Image changeImage = image.getScaledInstance(100, 100, Image.SCALE_SMOOTH);
 		ImageIcon icon = new ImageIcon(changeImage);
-		JLabel label = new JLabel(icon);
-		label.setSize(100, 100);
+		JLabel shape = new JLabel(icon);
+		shape.setSize(100, 100);
 		
-		cont.add(label);
+		cont.add(shape);
 		
 		cont.addMouseMotionListener(new MouseMotionListener() {
 			
 			@Override
 			public void mouseMoved(MouseEvent e) {
-				label.setBounds(e.getX() - 50, e.getY() - 50, label.getWidth(), label.getHeight());
+				shape.setBounds(e.getX() - 50, e.getY() - 50, shape.getWidth(), shape.getHeight());
 			}
 			
 			@Override
 			public void mouseDragged(MouseEvent e) {
-				label.setBounds(e.getX() - 50, e.getY() - 50, label.getWidth(), label.getHeight());
+				shape.setBounds(e.getX() - 50, e.getY() - 50, shape.getWidth(), shape.getHeight());
 			}
 		});
 	}

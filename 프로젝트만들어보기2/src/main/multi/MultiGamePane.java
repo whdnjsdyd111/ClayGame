@@ -38,7 +38,7 @@ public class MultiGamePane extends JLayeredPane {
 		nick_label_1.setBounds(550, 200, 300, 50);
 		add(nick_label_1);
 		
-		Buttons create_room = new Buttons(400, 350, "방 만들기", e -> {
+		Buttons create_room = new Buttons(450, 350, "Create Room", e -> {
 			CreatedRoom create = new CreatedRoom(frame, nickname);
 			if(create.server.serverSocketChannel.isOpen() == true) {
 				frame.add("createdRoom", create);
@@ -48,7 +48,7 @@ public class MultiGamePane extends JLayeredPane {
 		});
 		add(create_room);
 		
-		Buttons join_room = new Buttons(400, 450, "참여하기", e -> {
+		Buttons join_room = new Buttons(450, 450, "Find Room", e -> {
 			JoinedRoom join = new JoinedRoom(frame, tf_ip.getText(), nickname);
 			if(join.client.socketChannel.isConnected() == true) {
 				frame.add("joinedRoom", join);
@@ -58,7 +58,7 @@ public class MultiGamePane extends JLayeredPane {
 		});
 		add(join_room);
 		
-		Buttons to_main = new Buttons(400, 550, "메인으로", e -> {
+		Buttons to_main = new Buttons(450, 550, "Main", e -> {
 			frame.card.show(frame.getContentPane(), "main");
 			frame.remove(this);
 		});

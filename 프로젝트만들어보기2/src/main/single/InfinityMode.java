@@ -1,13 +1,10 @@
 package main.single;
 
-import java.awt.Color;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
-import javax.swing.JLabel;
-import javax.swing.border.LineBorder;
-
 import main.MainFrame;
+import main.common.Plate;
 import main.databases.InfinityDialog;
 import main.resource.Audios;
 
@@ -72,7 +69,7 @@ public class InfinityMode extends InGame {
 				i++;
 			}
 			
-			frame.dialog = new InfinityDialog(frame, "infinity mode rank", game_time.getText());
+			frame.dialog = new InfinityDialog(frame, "Infinity Mode Rank", game_time.getText());
 		};
 		
 		create_clay = () -> {
@@ -94,46 +91,44 @@ public class InfinityMode extends InGame {
 					
 					int height = (int) (Math.random() * 300);
 					
-					JLabel clay_label = new JLabel("clay");
-					clay_label.setBounds(0, height, 100, 50);
-					clay_label.setBorder(new LineBorder(Color.BLUE, 3));
-					claies.add(clay_label);
-					add(clay_label);
+					Plate plate = new Plate(height, Plate.PLATE_PNG);
+					claies.add(plate);
+					add(plate);
 					
 					int ran = (int) (Math.random() * 2);
 					float speed = (float) (minu > 0 ? minu * 1.5 : 0);
 					
 					if(ran == 0) {
 						for (float i = -100; i < 1200; i+=(2 + speed)) {
-							clay_label.setLocation((int) i, getHeight(i, height));
+							plate.setLocation((int) i, getHeight(i, height));
 							try {
 								Thread.sleep(1);
 							} catch (InterruptedException e) {
-								claies.remove(clay_label);
-								remove(clay_label);
+								claies.remove(plate);
+								remove(plate);
 							}
 						}
 					} else {
 						for (float i = 1200; i > -100; i-=(2 + speed)) {
-							clay_label.setLocation((int) i, getHeight(i, height));
+							plate.setLocation((int) i, getHeight(i, height));
 							try {
 								Thread.sleep(1);
 							} catch (InterruptedException e) {
-								claies.remove(clay_label);
-								remove(clay_label);
+								claies.remove(plate);
+								remove(plate);
 							}
 						}
 					}
 
-					if(clay_label.isVisible() && score != 0) {
+					if(plate.isVisible() && score != 0) {
 						changeText(--score);
 						
 						if(score == 0)
 							start_infinity.interrupt();
 					}
 					
-					claies.remove(clay_label);
-					remove(clay_label);
+					claies.remove(plate);
+					remove(plate);
 					
 				}).start();
 			}

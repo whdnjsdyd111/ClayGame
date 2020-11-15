@@ -6,6 +6,7 @@ import javax.swing.JLabel;
 import javax.swing.border.LineBorder;
 
 import main.MainFrame;
+import main.common.Plate;
 
 public class OppoInfinity extends MultiOppoGame {
 	
@@ -45,37 +46,35 @@ public class OppoInfinity extends MultiOppoGame {
 	public void create_clay(int height, int ran) {
 		new Thread(claies_group, () -> {
 			
-			JLabel clay_label = new JLabel("clay");
-			clay_label.setBounds(0, height, 100, 50);
-			clay_label.setBorder(new LineBorder(Color.BLUE, 3));
-			claies.add(clay_label);
-			add(clay_label);
+			Plate plate = new Plate(height, Plate.PLATE_PNG);
+			claies.add(plate);
+			add(plate);
 			
 			float speed = (float) (minu > 0 ? minu * 1.5 : 0);
 			
 			if(ran == 0) {
 				for (float i = -100; i < 900; i+=(2 + speed)) {
-					clay_label.setLocation((int) i, getHeight(i, height));
+					plate.setLocation((int) i, getHeight(i, height));
 					try {
 						Thread.sleep(1);
 					} catch (InterruptedException e) {
-						claies.remove(clay_label);
-						remove(clay_label);
+						claies.remove(plate);
+						remove(plate);
 					}
 				}
 			} else {
 				for (float i = 900; i > -100; i-=(2 + speed)) {
-					clay_label.setLocation((int) i, getHeight(i, height));
+					plate.setLocation((int) i, getHeight(i, height));
 					try {
 						Thread.sleep(1);
 					} catch (InterruptedException e) {
-						claies.remove(clay_label);
-						remove(clay_label);
+						claies.remove(plate);
+						remove(plate);
 					}
 				}
 			}
-			claies.remove(clay_label);
-			remove(clay_label);
+			claies.remove(plate);
+			remove(plate);
 			
 		}).start();
 	}
@@ -89,6 +88,7 @@ public class OppoInfinity extends MultiOppoGame {
 	
 	@Override
 	public void endGame(int score) {
+		System.out.println("상대방 시간 점수 : " + score);
 		int sec = score / 100;
 		int minu = sec / 60;
 		int mili = score % 100;
@@ -96,5 +96,6 @@ public class OppoInfinity extends MultiOppoGame {
 		start_time.interrupt();
 		game_score.setText((minu < 10 ? "0" + minu : minu) + ":" + (sec < 10 ? "0" + sec : sec) + ":" + (mili < 10 ? "0" + mili : mili));
 		game_score.setVisible(true);
+		game_time.setVisible(false);
 	}
 }

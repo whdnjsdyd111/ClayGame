@@ -1,14 +1,12 @@
 package main.single;
 
 import java.awt.Font;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 
 import main.MainFrame;
-import main.common.LabelBtn;
+import main.common.Buttons;
 import main.common.MouseShape;
 
 public class SingleGamePane extends JLayeredPane implements MouseShape {
@@ -19,185 +17,37 @@ public class SingleGamePane extends JLayeredPane implements MouseShape {
 		setLayout(null);
 		this.frame = frame;
 		
-		JLabel game_title = new JLabel("클레어 사격 게임");		// 게임 타이틀 라벨
-		game_title.setBounds(450, 100, 300, 50);
-		game_title.setFont(new Font("휴먼편지체", Font.BOLD, 40));
+		JLabel game_title = new JLabel("Clay Game");		// 게임 타이틀 라벨
+		game_title.setBounds(500, 100, 200, 50);
+		game_title.setFont(new Font("Consolas", Font.BOLD, 40));
 		add(game_title);
 		
-		JLabel infinity = new LabelBtn(125, 250, "무한 모드", new MouseListener() {
-			
-			@Override
-			public void mouseReleased(MouseEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void mousePressed(MouseEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void mouseExited(MouseEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				frame.card.show(frame.getContentPane(), "infinity");
-				frame.infinityMode.startGame();
-			}
+		Buttons infinity = new Buttons(100, 250, "Infinity Mode", e -> {
+			frame.card.show(frame.getContentPane(), "infinity");
+			frame.infinityMode.startGame();
 		});
-		infinity.setBounds(125, 250, 250, 100);
-		infinity.setFont(new Font("휴먼옛체", Font.BOLD, 35));
 		add(infinity);
 		
-		JLabel time = new LabelBtn(485, 250, "시간 제한 모드", new MouseListener() {
-			
-			@Override
-			public void mouseReleased(MouseEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void mousePressed(MouseEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void mouseExited(MouseEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				frame.card.show(frame.getContentPane(), "time");
-				frame.time.startGame();
-			}
+		Buttons time = new Buttons(450, 250, "Time Mode", e -> {
+			frame.card.show(frame.getContentPane(), "time");
+			frame.time.startGame();
 		});
-		time.setSize(300, 100);
-		time.setLocation(450, 250);
-		time.setFont(new Font("휴먼옛체", Font.BOLD, 35));
 		add(time);
 		
-		JLabel reload = new LabelBtn(875, 250, "장전 모드", new MouseListener() {
-			
-			@Override
-			public void mouseReleased(MouseEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void mousePressed(MouseEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void mouseExited(MouseEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				frame.card.show(frame.getContentPane(), "reload");
-				frame.reload.startGame();
-			}
+		Buttons reload = new Buttons(800, 250, "Reload Mode", e -> {
+			frame.card.show(frame.getContentPane(), "reload");
+			frame.reload.startGame();
 		});
-		reload.setFont(new Font("휴먼옛체", Font.BOLD, 35));
 		add(reload);
 		
-		JLabel to_main = new LabelBtn(285, 480, "메인으로", new MouseListener() {
-			
-			@Override
-			public void mouseReleased(MouseEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void mousePressed(MouseEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void mouseExited(MouseEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				frame.card.show(frame.getContentPane(), "main");
-			}
+		Buttons to_main = new Buttons(275, 480, "Main", e -> {
+			frame.card.show(frame.getContentPane(), "main");
 		});
-		to_main.setFont(new Font("휴먼옛체", Font.PLAIN, 35));
 		add(to_main);
 		
-		JLabel end = new LabelBtn(680, 480, "끝내기", new MouseListener() {
-			
-			@Override
-			public void mouseReleased(MouseEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void mousePressed(MouseEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void mouseExited(MouseEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				frame.dispose();
-			}
+		Buttons end = new Buttons(625, 480, "End", e -> {
+			frame.dispose();
 		});
-		end.setFont(new Font("휴먼옛체", Font.BOLD, 35));
 		add(end);
 	}
 	

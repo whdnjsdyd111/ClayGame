@@ -7,7 +7,7 @@ import javax.swing.JLabel;
 
 public interface GameScene {
 	
-	default public int removeClay(int x, int y, Set<JLabel> claies, JLabel game_score, int score) {
+	default public int removeClay(int x, int y, Set<Plate> claies, JLabel game_score, int score) {
 		try {
 			for(JLabel label : claies) {
 				if(checkTarget(x, y, label)) {
@@ -22,7 +22,7 @@ public interface GameScene {
 		return score;
 	}
 	
-	default public int removeClay(int x, int y, Set<JLabel> claies, JLabel game_score, int score, int round) {
+	default public int removeClay(int x, int y, Set<Plate> claies, JLabel game_score, int score, int round) {
 		try {
 			for(JLabel label : claies) {
 				if(checkTarget(x, y, label)) {
@@ -37,7 +37,7 @@ public interface GameScene {
 		return score;
 	}
 	
-	default public void removeClay(int x, int y, Set<JLabel> claies, JLabel game_score) {
+	default public void removeClay(int x, int y, Set<Plate> claies, JLabel game_score) {
 		try {
 			for(JLabel label : claies) {
 				if(checkTarget(x, y, label)) {
