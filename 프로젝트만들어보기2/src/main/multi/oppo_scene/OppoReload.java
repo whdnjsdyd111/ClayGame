@@ -6,14 +6,40 @@ import javax.swing.JLabel;
 
 import main.MainFrame;
 import main.common.Plate;
+import main.single.Bullet;
 
 public class OppoReload extends MultiOppoGame {
 	
 	int round = 1;
 	JLabel round_label = null;
+	Bullet bullet[] = new Bullet[5];	// ÃÑ¾Ë 5¹ß
+	int bullet_count = 4;	// ÀÎµ¦½º¿¡ ¸ÂÃß±â
+	
+	Runnable reload_run = () -> {
+		bullet_count = -1;
+		for (int i = 0; i < bullet.length; i++) {
+			bullet[i].setVisible(false);
+		}
+		
+		for (int i = 0; i < bullet.length; i++) {
+			bullet[i].setVisible(true);
+			bullet_count++;
+			if(i == 4)
+				return;
+			try {
+				Thread.sleep(250);
+			} catch (InterruptedException e) {
+			}
+		}
+	};
 	
 	public OppoReload(MainFrame frame) {
 		super(frame);
+		
+		for (int i = 0; i < bullet.length; i++) {
+			bullet[i] = new Bullet(800, 725 - i * 80);
+			add(bullet[i]);
+		}
 		
 		round_label = new JLabel("1 Round Start");
 		round_label.setFont(new Font("Consolas", Font.BOLD, 40));
@@ -93,5 +119,15 @@ public class OppoReload extends MultiOppoGame {
 		game_time.setVisible(false);
 	}
 	
+	@Override
+	public void receiveMousePoint(int x, int y) {
+		removeClay(x, y, claies, game_score);
+		bullet[bullet_count--].setVisible(false);
+	}
+	
+	@Override
+	public void reload() {
+		new Thread(reload_run).start();
+	}
 	
 }

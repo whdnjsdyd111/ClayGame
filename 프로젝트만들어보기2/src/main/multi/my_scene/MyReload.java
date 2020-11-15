@@ -258,4 +258,8 @@ public class MyReload extends MultiMyGame {
 			new AlertDialog(frame, AlertDialog.MSG_NET1);
 		}
 	}
+	
+	private void sendReload() {
+		// 재장전 데이터 보내기 TODO
+	}
 }

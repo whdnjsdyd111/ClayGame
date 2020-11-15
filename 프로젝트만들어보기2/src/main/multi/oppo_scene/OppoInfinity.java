@@ -98,4 +98,7 @@ public class OppoInfinity extends MultiOppoGame {
 		game_score.setVisible(true);
 		game_time.setVisible(false);
 	}
+	
+	@Override
+	public void reload() {}
 }

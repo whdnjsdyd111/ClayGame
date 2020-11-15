@@ -53,6 +53,7 @@ public abstract class MultiOppoGame extends Dialog implements GameScene  {
 		removeClay(x, y, claies, game_score);
 	}
 	
+	abstract public void reload();
 	@Override
 	public void hideMenu() {}
 	@Override

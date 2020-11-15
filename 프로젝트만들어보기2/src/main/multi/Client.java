@@ -221,7 +221,9 @@ public class Client {
 					
 					if(data[0] == -1) {
 						oppo_scene.endGame(data[1]);
-					} else if(data.length == 2)
+					} else if(data[0] == -2) {
+						oppo_scene.reload();
+					} else  if(data.length == 2)
 						oppo_scene.create_clay(data[0], data[1]);
 					else if(data.length == 3)
 						oppo_scene.receiveMousePoint(data[0], data[1]);
