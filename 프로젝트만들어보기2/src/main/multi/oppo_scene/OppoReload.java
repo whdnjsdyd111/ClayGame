@@ -53,7 +53,7 @@ public class OppoReload extends MultiOppoGame {
 		round_label.setVisible(false);
 		
 		time_start = () -> {
-			for (round = 1; round <= 10; round++) {
+			for (round = 1; round <= 5; round++) {
 				repaint();
 				
 				game_time.setText(round + " Round");
@@ -83,7 +83,7 @@ public class OppoReload extends MultiOppoGame {
 			claies.add(plate);
 			add(plate);
 			
-			float speed = (float) 1.5 + (float) 0.15 * round;
+			float speed = (float) 1.5 + (float) 0.2 * round;
 			
 			if(ran == 0) {
 				for (float i = -100; i < 900; i+=speed) {

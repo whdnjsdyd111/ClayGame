@@ -6,6 +6,7 @@ import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
 import java.nio.channels.SocketChannel;
 import java.nio.charset.Charset;
+import java.util.Arrays;
 
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -13,6 +14,7 @@ import javax.swing.JLayeredPane;
 import javax.swing.JTextArea;
 
 import main.MainFrame;
+import main.databases.MemberDAO;
 import main.multi.my_scene.MultiMyGame;
 import main.multi.my_scene.MyInfinity;
 import main.multi.my_scene.MyReload;
@@ -97,7 +99,7 @@ public class Client {
 					} else if(byteBuffer.get(0) == 2) {
 						comboBox.setSelectedIndex(2);
 						continue;
-					} else if(byteBuffer.get(0) == 3) {
+					} else if(byteBuffer.get(0) == -1) {
 						System.out.println("[게임 시작]");
 						sendGameStart();
 						
@@ -154,7 +156,7 @@ public class Client {
 	
 	public void sendGameStart() {
 		try {
-			ByteBuffer byteBuffer = ByteBuffer.wrap(new byte[] { (byte) 0 });
+			ByteBuffer byteBuffer = ByteBuffer.wrap(new byte[] { (byte) -1 });
 			socketChannel.write(byteBuffer);
 			
 			System.out.println("[클라이언트 게임 시작 보내기 완료]");
@@ -228,9 +230,11 @@ public class Client {
 					int[] data = new int[intBuffer.capacity()];
 					intBuffer.get(data);
 					System.out.println("클라이언트 데이터 받음");
-					
-					if(data[0] == -1)
+					System.out.println(Arrays.toString(data));
+					if(data[0] == -1) {
 						oppo_scene.endGame(data[1]);
+						break;
+					}
 					else if(data[0] == -2)
 						oppo_scene.reload();
 					else  if(data.length == 2)
@@ -238,7 +242,6 @@ public class Client {
 					else if(data.length == 3)
 						oppo_scene.receiveMousePoint(data[0], data[1]);
 						
-					
 				} catch (Exception e) {
 					e.printStackTrace();
 					System.out.println("[서버 통신 안됨]");
@@ -247,6 +250,29 @@ public class Client {
 					break;
 				}
 			}
+			
+			if(comboBox.getSelectedIndex() == 0 || comboBox.getSelectedIndex() == 2) {
+				if(my_scene.game_score.getText().compareTo(oppo_scene.game_score.getText()) > 0) {
+					textArea.append("\n나의 승리");
+					textArea.append("\n" + MemberDAO.getInstance().updatePVP("win"));
+				} else if(my_scene.game_score.getText().compareTo(oppo_scene.game_score.getText()) < 0) {
+					textArea.append("\n나의 패배");
+					textArea.append("\n" + MemberDAO.getInstance().updatePVP("lose"));
+				} else {
+					textArea.append("\n무승부");
+					textArea.append("\n" + MemberDAO.getInstance().updatePVP("draw"));
+				}
+			} else {
+				if(my_scene.score > 0) {
+					textArea.append("\n나의 승리");
+					textArea.append("\n" + MemberDAO.getInstance().updatePVP("win"));
+				} else if(my_scene.score == 0) {
+					textArea.append("\n나의 패배");
+					textArea.append("\n" + MemberDAO.getInstance().updatePVP("lose"));
+				}
+			}
+
+			receive();
 		}).start();
 	}
 }

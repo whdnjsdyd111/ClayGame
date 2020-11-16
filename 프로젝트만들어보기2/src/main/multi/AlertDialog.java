@@ -22,7 +22,7 @@ public class AlertDialog extends Dialog {
 	public static final String MSG2 = "아이디는 영어와 숫자만 가능합니다.";
 	public static final String MSG3 = "아이디는 6자 이상에서 18자 이하만 가능합니다.";
 	public static final String MSG_EMPTY = "입력하지 않은 사항이 있습니다.";
-	public static final String MSG_PW = "암호는 최소 하나의 문자 및 숫자로 8자 이상 입력해주십시오.";
+	public static final String MSG_PW = "<html><body>암호는 최소 하나의 문자, 숫자 및 특수문자로<br>8자 이상 입력해주십시오.</body></html>";
 	public static final String MSG_NICK = "닉네임은 2자 이상에서 10자 이하만 가능합니다.";
 	public static final String MSG_ID = "존재하지 않는 아이디입니다.";
 	public static final String MSG_NOT_MATCH = "두 비밀번호는 일치해야 합니다.";
@@ -35,6 +35,7 @@ public class AlertDialog extends Dialog {
 		super(frame, "경고창", true);
 		setBounds(0, 0, 450, 350);
 		setResizable(false);
+		setLayout(null);
 		
 		Dimension frameSize = this.getSize(); // 프레임 사이즈
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize(); // 모니터 사이즈
@@ -51,10 +52,6 @@ public class AlertDialog extends Dialog {
 			dispose();
 		});
 		add(btn);
-		
-		
-		setResizable(false);
-		setLayout(null);
 		
 		setVisible(true);
 	}

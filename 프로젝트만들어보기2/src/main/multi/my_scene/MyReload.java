@@ -58,7 +58,7 @@ public class MyReload extends MultiMyGame {
 		super(frame, socketChannel, oppo);
 		
 		this.endScore_label = new JLabel();
-		endScore_label.setBounds(250, 300, 400, 50);
+		endScore_label.setBounds(300, 300, 400, 50);
 		endScore_label.setVisible(true);
 		endScore_label.setFont(new Font("Consolas", Font.BOLD, 40));
 		add(endScore_label);
@@ -136,8 +136,9 @@ public class MyReload extends MultiMyGame {
 		
 		time_start = () -> {
 			
-			for (round = 1; round <= 10; round++) {
+			for (round = 1; round <= 5; round++) {
 				repaint();
+				System.gc();
 				claies_group = new ThreadGroup("clay group");
 				claies_group.setDaemon(true);
 				
@@ -175,7 +176,7 @@ public class MyReload extends MultiMyGame {
 							// 10 라운드 속도 3
 							sendClayPoint(height, ran);
 							
-							float speed = (float) 1.5 + (float) 0.15 * round;
+							float speed = (float) 1.5 + (float) 0.2 * round;
 							
 							if(ran == 0) {
 								for (float i = -100; i < 900; i+=speed) {
@@ -237,7 +238,7 @@ public class MyReload extends MultiMyGame {
 	
 	@Override
 	public void endGame() {
-		endScore_label.setText("Final Score : " + score);
+		endScore_label.setText("Score : " + score);
 		endScore_label.setVisible(true);
 		
 		try {

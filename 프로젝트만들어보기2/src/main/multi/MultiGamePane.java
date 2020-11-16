@@ -17,9 +17,11 @@ public class MultiGamePane extends JLayeredPane {
 	private static final long serialVersionUID = 1L;
 	
 	MainFrame frame = null;
+	public static String id = null;
 	
-	public MultiGamePane(MainFrame frame, String nickname) {
+	public MultiGamePane(MainFrame frame, String nickname, String id) {
 		this.frame = frame;
+		MultiGamePane.id = id;
 		setLayout(null);
 		
 		JLabel ip_label = new JLabel("IP");

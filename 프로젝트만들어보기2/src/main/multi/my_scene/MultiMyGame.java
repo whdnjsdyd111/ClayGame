@@ -30,10 +30,10 @@ public abstract class MultiMyGame extends Dialog implements GameScene, MouseShap
 	
 	MainFrame frame = null;
 	Set<Plate> claies = null;
-	JLabel game_time = null;
-	JLabel game_score = null;
+	public JLabel game_time = null;
+	public JLabel game_score = null;
 	public JButton to_room = null;
-	int score = 0;
+	public int score = 0;
 	boolean isEnd = false;
 	
 	Runnable time_start = null;
@@ -43,14 +43,12 @@ public abstract class MultiMyGame extends Dialog implements GameScene, MouseShap
 	public MultiOppoGame oppo = null;
 	
 	public MultiMyGame(MainFrame frame, SocketChannel socketChannel, MultiOppoGame oppo) {
-		super(frame, "내 화면", true);
+		super(frame, "내 화면", false);
 		this.frame = frame;
 		this.socketChannel = socketChannel;
 		this.oppo = oppo;
 		setBounds(100, 200, 900, 800);
 		setLayout(null);
-		
-		
 		
 		game_time = new JLabel("00:00");		// 게임 타이틀 라벨
 		game_time.setBounds(250, 50, 300, 50);

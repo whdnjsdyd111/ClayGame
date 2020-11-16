@@ -18,9 +18,9 @@ public class ReloadDAO {
 	}
 	
 	private Connection getConnection() throws Exception {
-		String url = "jdbc:oracle:thin:@localhost:1521:xe";
-		String id = "clay_game";
-		String password = "clay_game";
+		String url = "jdbc:oracle:thin:@net.yju.ac.kr:1521:orcl";
+		String id = "s1702043";
+		String password = "p1702043";
 		Connection conn = null;
 		
 		conn = DriverManager.getConnection(url, id, password);	

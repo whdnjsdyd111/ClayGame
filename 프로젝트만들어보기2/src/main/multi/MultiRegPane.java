@@ -31,11 +31,11 @@ public class MultiRegPane extends JLayeredPane {
 		MyTextField tf_id = new MyTextField(450, 200);
 		add(tf_id);
 		
-		MyTextField tf_pw = new MyTextField(450, 300);
-		add(tf_pw);
-		
-		MyTextField tf_nick = new MyTextField(450, 400);
+		MyTextField tf_nick = new MyTextField(450, 300);
 		add(tf_nick);
+		
+		MyTextField tf_pw = new MyTextField(450, 400);
+		add(tf_pw);
 		
 		JLabel id_label = new JLabel("ID");
 		id_label.setFont(new Font("Consolas", Font.PLAIN, 35));
@@ -79,7 +79,7 @@ public class MultiRegPane extends JLayeredPane {
 				return;
 			}
 			
-			if(!Pattern.matches("^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}$", pw)) {
+			if(!Pattern.compile("^(?=.*[A-Za-z])(?=.*[0-9])(?=.*[$@$!%*#?&])[A-Za-z[0-9]$@$!%*#?&]{8,}$").matcher(pw).matches()) { // TODO
 				new AlertDialog(frame, AlertDialog.MSG_PW);
 				return;
 			}

@@ -1,5 +1,7 @@
 package main.multi.oppo_scene;
 
+import java.awt.Font;
+
 import main.MainFrame;
 import main.common.Plate;
 
@@ -95,6 +97,7 @@ public class OppoInfinity extends MultiOppoGame {
 		
 		start_time.interrupt();
 		game_score.setText((minu < 10 ? "0" + minu : minu) + ":" + (sec < 10 ? "0" + sec : sec) + ":" + (mili < 10 ? "0" + mili : mili));
+		game_score.setFont(new Font("Consolas", Font.BOLD, 15));
 		game_score.setVisible(true);
 		game_time.setVisible(false);
 	}

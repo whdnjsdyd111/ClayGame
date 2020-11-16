@@ -7,6 +7,7 @@ import java.nio.IntBuffer;
 import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
 import java.nio.charset.Charset;
+import java.util.Arrays;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -14,7 +15,11 @@ import javax.swing.JLabel;
 import javax.swing.JTextArea;
 
 import main.MainFrame;
+import main.databases.MemberDAO;
 import main.multi.my_scene.MultiMyGame;
+import main.multi.my_scene.MyInfinity;
+import main.multi.my_scene.MyReload;
+import main.multi.my_scene.MyTime;
 import main.multi.oppo_scene.MultiOppoGame;
 import main.multi.oppo_scene.OppoInfinity;
 import main.multi.oppo_scene.OppoReload;
@@ -54,6 +59,10 @@ public class Server {
 			if(serverSocketChannel.isOpen()) stopServer();
 			return;
 		}
+		
+		startBtn.addActionListener(e -> {
+			send((byte) -1);
+		});
 		
 		System.out.println("[서버 시작]");
 		connect();
@@ -114,7 +123,7 @@ public class Server {
 					
 					byteBuffer.flip();	// 문자열로 변환
 					
-					if(byteBuffer.get(0) == 0) {
+					if(byteBuffer.get(0) == -1) {
 						// 게임 시작을 클라이언트에 알려 준후 클라이언트가 게임을 시작했다는 것을 받고 IntBuffer 시작
 						if(comboBox.getSelectedIndex() == 0)
 							oppo_scene = new OppoTime(frame);
@@ -122,8 +131,16 @@ public class Server {
 							oppo_scene = new OppoInfinity(frame);
 						if(comboBox.getSelectedIndex() == 2)
 							oppo_scene = new OppoReload(frame);
-						System.out.println(my_scene);
+						
 						receiveGameInfo();
+						
+						if(comboBox.getSelectedIndex() == 0)
+							my_scene = new MyTime(frame, socketChannel, oppo_scene);
+						if(comboBox.getSelectedIndex() == 1)
+							my_scene = new MyInfinity(frame, socketChannel, oppo_scene);
+						if(comboBox.getSelectedIndex() == 2)
+							my_scene = new MyReload(frame, socketChannel, oppo_scene);
+						
 						
 						break;
 					}
@@ -286,9 +303,11 @@ public class Server {
 					int[] data = new int[intBuffer.capacity()];
 					intBuffer.get(data);
 					System.out.println("서버 데이터 받음");
-					
-					if(data[0] == -1)
+					System.out.println(Arrays.toString(data));
+					if(data[0] == -1) {
 						oppo_scene.endGame(data[1]);
+						break;
+					}
 					else if(data[0] == -2)
 						oppo_scene.reload();
 					else  if(data.length == 2)
@@ -310,6 +329,29 @@ public class Server {
 					break;
 				}
 			}
+			
+			if(comboBox.getSelectedIndex() == 0 || comboBox.getSelectedIndex() == 2) {
+				if(my_scene.game_score.getText().compareTo(oppo_scene.game_score.getText()) > 0) {
+					textArea.append("\n나의 승리");
+					textArea.append("\n" + MemberDAO.getInstance().updatePVP("win"));
+				} else if(my_scene.game_score.getText().compareTo(oppo_scene.game_score.getText()) < 0) {
+					textArea.append("\n나의 패배");
+					textArea.append("\n" + MemberDAO.getInstance().updatePVP("lose"));
+				} else {
+					textArea.append("\n무승부");
+					textArea.append("\n" + MemberDAO.getInstance().updatePVP("draw"));
+				}
+			} else {
+				if(my_scene.score > 0) {
+					textArea.append("\n나의 승리");
+					textArea.append("\n" + MemberDAO.getInstance().updatePVP("win"));
+				} else if(my_scene.score == 0) {
+					textArea.append("\n나의 패배");
+					textArea.append("\n" + MemberDAO.getInstance().updatePVP("lose"));
+				}
+			}
+
+			receive();
 		}).start();
 	}
 }

@@ -27,8 +27,9 @@ public class MyTime extends MultiMyGame {
 	
 	public MyTime(MainFrame frame, SocketChannel socketChannel, MultiOppoGame oppo) {
 		super(frame, socketChannel, oppo);
+		
 		this.endScore_label = new JLabel();
-		endScore_label.setBounds(250, 300, 400, 50);
+		endScore_label.setBounds(300, 300, 400, 50);
 		endScore_label.setVisible(true);
 		endScore_label.setFont(new Font("Consolas", Font.BOLD, 40));
 		add(endScore_label);
@@ -66,7 +67,7 @@ public class MyTime extends MultiMyGame {
 		});
 
 		time_start = () -> {
-			for (int i = 10; i >= 0; i--) {
+			for (int i = 60; i >= 0; i--) {
 				int sec = i % 60;
 				game_time.setText("0" + (i / 60) + ":" + (sec < 10 ? "0" + sec : sec));
 				
@@ -150,7 +151,7 @@ public class MyTime extends MultiMyGame {
 	
 	@Override
 	public void endGame() {
-		endScore_label.setText("Final Score : " + score);
+		endScore_label.setText("Score : " + score);
 		endScore_label.setVisible(true);
 		
 		try {

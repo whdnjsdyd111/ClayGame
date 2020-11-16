@@ -19,9 +19,6 @@ import javax.swing.border.LineBorder;
 import main.MainFrame;
 import main.common.MyButton;
 import main.multi.my_scene.MultiMyGame;
-import main.multi.my_scene.MyInfinity;
-import main.multi.my_scene.MyReload;
-import main.multi.my_scene.MyTime;
 
 public class CreatedRoom extends JLayeredPane {
 	
@@ -85,15 +82,7 @@ public class CreatedRoom extends JLayeredPane {
 		});
 		add(comboBox);
 		
-		MyButton startBtn = new MyButton(825, 500, "Game Start", e -> {
-			server.send((byte) 3);
-			if(comboBox.getSelectedIndex() == 0)
-				multi = new MyTime(frame, server.socketChannel, null);
-			if(comboBox.getSelectedIndex() == 1)
-				multi = new MyInfinity(frame, server.socketChannel, null);
-			if(comboBox.getSelectedIndex() == 2)
-				multi = new MyReload(frame, server.socketChannel, null);
-		});
+		MyButton startBtn = new MyButton(825, 500, "Game Start", null);
 		startBtn.setEnabled(false);
 		add(startBtn);
 		

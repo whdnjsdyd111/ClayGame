@@ -33,7 +33,7 @@ public class MultiLoginPane extends JLayeredPane {
 		add(tf_id);
 		
 		MyTextField tf_pw = new MyTextField(450, 400);
-		tf_pw.setText("jsh688123");
+		tf_pw.setText("jsh6881@");
 		add(tf_pw);
 		
 		JLabel id_label = new JLabel("ID");
@@ -57,7 +57,7 @@ public class MultiLoginPane extends JLayeredPane {
 			String nickname = MemberDAO.getInstance().checkAll(id, pw);
 			
 			if(nickname != null) {
-				frame.add("multi", new MultiGamePane(frame, nickname));
+				frame.add("multi", new MultiGamePane(frame, nickname, id));
 				frame.card.show(frame.getContentPane(), "multi");
 			} else {
 				new AlertDialog(frame, AlertDialog.MSG_FAIL);

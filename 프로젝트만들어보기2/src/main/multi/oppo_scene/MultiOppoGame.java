@@ -21,9 +21,13 @@ public abstract class MultiOppoGame extends Dialog implements GameScene  {
 	
 	MainFrame frame = null;
 	Set<Plate> claies = null;
-	JLabel game_time = null;
-	JLabel game_score = null;
+	public JLabel game_time = null;
+	public JLabel game_score = null;
 	boolean isEnd = false;
+	
+	public JLabel getGame_score() {
+		return game_score;
+	}
 	
 	Runnable time_start = null;
 	ThreadGroup claies_group = null;

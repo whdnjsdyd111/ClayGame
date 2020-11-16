@@ -14,7 +14,7 @@ public class OppoTime extends MultiOppoGame {
 		super(frame);
 		
 		time_start = () -> {
-			for (int i = 10; i >= 0; i--) {
+			for (int i = 60; i >= 0; i--) {
 				int sec = i % 60;
 				game_time.setText("0" + (i / 60) + ":" + (sec < 10 ? "0" + sec : sec));
 				

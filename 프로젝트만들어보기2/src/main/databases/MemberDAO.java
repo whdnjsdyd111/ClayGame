@@ -7,6 +7,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.regex.Pattern;
 
+import main.multi.MultiGamePane;
+
 public class MemberDAO {
 	private static MemberDAO instance = new MemberDAO();
 	
@@ -17,9 +19,9 @@ public class MemberDAO {
 	}
 	
 	private Connection getConnection() throws Exception {
-		String url = "jdbc:oracle:thin:@localhost:1521:xe";
-		String id = "clay_game";
-		String password = "clay_game";
+		String url = "jdbc:oracle:thin:@net.yju.ac.kr:1521:orcl";
+		String id = "s1702043";
+		String password = "p1702043";
 		Connection conn = null;
 		
 		conn = DriverManager.getConnection(url, id, password);	
@@ -96,7 +98,7 @@ public class MemberDAO {
 		
 		try {
 			conn = getConnection();
-			String sql = "INSERT INTO member VALUES(?, ?, ?)";
+			String sql = "INSERT INTO member(mem_id, mem_pw, mem_nickname) VALUES(?, ?, ?)";
 			
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, id);
@@ -135,5 +137,51 @@ public class MemberDAO {
 			if(conn != null)
 				try { conn.close(); } catch(SQLException e) {}
 		}
+	}
+	
+	public String updatePVP(String kind) {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		String str = "";
+		
+		try {
+			conn = getConnection();
+			String sql = "UPDATE member SET " + kind + " = " + kind + " + 1 WHERE mem_id = ?";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, MultiGamePane.id);
+			
+			pstmt.executeUpdate();
+			pstmt.close();
+			
+			sql = "SELECT win, draw, lose FROM member WHERE mem_id = ?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, MultiGamePane.id);
+			
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				int total = 0;
+				
+				for (int i = 0; i < 3; i++) {
+					total += rs.getInt(i + 1);
+				}
+				
+				str = total + "Àü " + rs.getInt(1) + "½Â " + rs.getInt(2) + "¹« " + rs.getInt(3) + "ÆÐ";
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			if(rs != null)
+				try { rs.close(); } catch(SQLException e) {}
+			if(pstmt != null)
+				try { pstmt.close(); } catch (SQLException e) {}
+			if(conn != null)
+				try { conn.close(); } catch(SQLException e) {}
+		}
+		
+		return str;
 	}
 }
