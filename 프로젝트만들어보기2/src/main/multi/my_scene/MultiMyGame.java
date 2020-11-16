@@ -14,11 +14,12 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 
 import main.MainFrame;
-import main.common.MyButton;
 import main.common.GameScene;
 import main.common.MouseShape;
+import main.common.MyButton;
 import main.common.Plate;
 import main.multi.AlertDialog;
+import main.multi.oppo_scene.MultiOppoGame;
 
 public abstract class MultiMyGame extends Dialog implements GameScene, MouseShape {
 	
@@ -31,7 +32,7 @@ public abstract class MultiMyGame extends Dialog implements GameScene, MouseShap
 	Set<Plate> claies = null;
 	JLabel game_time = null;
 	JLabel game_score = null;
-	JButton to_room = null;
+	public JButton to_room = null;
 	int score = 0;
 	boolean isEnd = false;
 	
@@ -39,11 +40,13 @@ public abstract class MultiMyGame extends Dialog implements GameScene, MouseShap
 	Runnable create_clay = null;
 	ThreadGroup claies_group = null;
 	SocketChannel socketChannel;
+	public MultiOppoGame oppo = null;
 	
-	public MultiMyGame(MainFrame frame, SocketChannel socketChannel) {
+	public MultiMyGame(MainFrame frame, SocketChannel socketChannel, MultiOppoGame oppo) {
 		super(frame, "³» È­¸é", true);
 		this.frame = frame;
 		this.socketChannel = socketChannel;
+		this.oppo = oppo;
 		setBounds(100, 200, 900, 800);
 		setLayout(null);
 		
@@ -63,10 +66,7 @@ public abstract class MultiMyGame extends Dialog implements GameScene, MouseShap
 		
 		setMouseShape(this);
 		
-		to_room = new MyButton(300, 400, "Into Room", e -> {
-			frame.setCursor(Cursor.getDefaultCursor());
-			dispose();
-		});
+		to_room = new MyButton(300, 400, "Into Room", null);
 		add(to_room);
 		hideMenu();
 	}
@@ -82,6 +82,10 @@ public abstract class MultiMyGame extends Dialog implements GameScene, MouseShap
 	@Override
 	public void showMenu() {
 		to_room.setVisible(true);
+		to_room.addActionListener(e -> {
+			dispose();
+			oppo.dispose();
+		});
 		frame.setCursor(Cursor.getDefaultCursor());
 	}
 	

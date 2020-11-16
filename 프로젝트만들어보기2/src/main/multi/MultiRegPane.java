@@ -5,7 +5,6 @@ import java.util.regex.Pattern;
 
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
-import javax.swing.JTextField;
 
 import main.MainFrame;
 import main.common.MyButton;

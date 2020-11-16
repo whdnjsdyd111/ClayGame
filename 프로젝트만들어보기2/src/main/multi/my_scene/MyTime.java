@@ -13,6 +13,7 @@ import javax.swing.JLabel;
 import main.MainFrame;
 import main.common.Plate;
 import main.multi.AlertDialog;
+import main.multi.oppo_scene.MultiOppoGame;
 import main.resource.Audios;
 
 public class MyTime extends MultiMyGame {
@@ -24,8 +25,8 @@ public class MyTime extends MultiMyGame {
 	
 	private JLabel endScore_label;
 	
-	public MyTime(MainFrame frame, SocketChannel socketChannel) {
-		super(frame, socketChannel);
+	public MyTime(MainFrame frame, SocketChannel socketChannel, MultiOppoGame oppo) {
+		super(frame, socketChannel, oppo);
 		this.endScore_label = new JLabel();
 		endScore_label.setBounds(250, 300, 400, 50);
 		endScore_label.setVisible(true);

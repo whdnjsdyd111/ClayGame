@@ -103,16 +103,22 @@ public class Client {
 						
 						if(comboBox.getSelectedIndex() == 0) {
 							oppo_scene = new OppoTime(frame);
-							my_scene = new MyTime(frame, socketChannel);
 						} else if(comboBox.getSelectedIndex() == 1) {
 							oppo_scene = new OppoInfinity(frame);
-							my_scene = new MyInfinity(frame, socketChannel);
 						} else if(comboBox.getSelectedIndex() == 2) {
 							oppo_scene = new OppoReload(frame);
-							my_scene = new MyReload(frame, socketChannel);
 						}
 						
 						receiveGameInfo();
+						
+						if(comboBox.getSelectedIndex() == 0) {
+							my_scene = new MyTime(frame, socketChannel, oppo_scene);
+						} else if(comboBox.getSelectedIndex() == 1) {
+							my_scene = new MyInfinity(frame, socketChannel, oppo_scene);
+						} else if(comboBox.getSelectedIndex() == 2) {
+							my_scene = new MyReload(frame, socketChannel, oppo_scene);
+						}
+						
 						break;
 					}
 					
@@ -204,6 +210,7 @@ public class Client {
 	
 	private void receiveGameInfo() {
 		System.out.println("[게임 정보 받기 시작]");
+		
 		new Thread(() -> {
 			while(true) {
 				try {
@@ -220,6 +227,7 @@ public class Client {
 					IntBuffer intBuffer = byteBuffer.asIntBuffer();
 					int[] data = new int[intBuffer.capacity()];
 					intBuffer.get(data);
+					System.out.println("클라이언트 데이터 받음");
 					
 					if(data[0] == -1)
 						oppo_scene.endGame(data[1]);

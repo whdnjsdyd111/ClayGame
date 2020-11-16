@@ -1,10 +1,5 @@
 package main.multi.oppo_scene;
 
-import java.awt.Color;
-
-import javax.swing.JLabel;
-import javax.swing.border.LineBorder;
-
 import main.MainFrame;
 import main.common.Plate;
 

@@ -17,6 +17,7 @@ import main.MainFrame;
 import main.multi.my_scene.MultiMyGame;
 import main.multi.oppo_scene.MultiOppoGame;
 import main.multi.oppo_scene.OppoInfinity;
+import main.multi.oppo_scene.OppoReload;
 import main.multi.oppo_scene.OppoTime;
 
 public class Server {
@@ -29,11 +30,12 @@ public class Server {
 	private JButton startBtn;
 	private JComboBox<String> comboBox;
 	static final int PORT = 7000;
+	
 	private MultiOppoGame oppo_scene = null;
-	private MultiMyGame multi = null;
+	private MultiMyGame my_scene = null;
 	
 	public Server(MainFrame frame, String nickname, JLabel oppo_nickname, JTextArea textArea, JButton startBtn, 
-			JComboBox<String> comboBox, MultiMyGame multi) {
+			JComboBox<String> comboBox, MultiMyGame my_scene) {
 		// 서버 시작
 		this.frame = frame;
 		this.nickname = nickname;
@@ -41,7 +43,7 @@ public class Server {
 		this.textArea = textArea;
 		this.startBtn = startBtn;
 		this.comboBox = comboBox;
-		this.multi = multi;
+		this.my_scene = my_scene;
 		
 		try {
 			serverSocketChannel = ServerSocketChannel.open();
@@ -119,7 +121,8 @@ public class Server {
 						if(comboBox.getSelectedIndex() == 1)
 							oppo_scene = new OppoInfinity(frame);
 						if(comboBox.getSelectedIndex() == 2)
-							oppo_scene = new OppoInfinity(frame);
+							oppo_scene = new OppoReload(frame);
+						System.out.println(my_scene);
 						receiveGameInfo();
 						
 						break;
@@ -265,6 +268,7 @@ public class Server {
 	
 	private void receiveGameInfo() {
 		System.out.println("[게임 정보 받기 시작]");
+		
 		new Thread(() -> {
 			while(true) {
 				try {
@@ -281,6 +285,7 @@ public class Server {
 					IntBuffer intBuffer = byteBuffer.asIntBuffer();
 					int[] data = new int[intBuffer.capacity()];
 					intBuffer.get(data);
+					System.out.println("서버 데이터 받음");
 					
 					if(data[0] == -1)
 						oppo_scene.endGame(data[1]);

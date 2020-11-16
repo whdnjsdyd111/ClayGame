@@ -1,7 +1,6 @@
 package main.multi;
 
 import java.awt.Font;
-import java.awt.Frame;
 
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;

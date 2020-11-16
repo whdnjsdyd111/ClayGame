@@ -53,7 +53,7 @@ public class CreatedRoom extends JLayeredPane {
 		add(master);
 		
 		JLabel master_nickname = new JLabel(nickname);
-		master_nickname.setFont(new Font("µ¸¿ò", Font.BOLD, 17));
+		master_nickname.setFont(new Font("2D Coding", Font.BOLD, 17));
 		master_nickname.setHorizontalAlignment(SwingConstants.CENTER);
 		master_nickname.setBounds(800, 250, 350, 20);
 		add(master_nickname);
@@ -66,7 +66,7 @@ public class CreatedRoom extends JLayeredPane {
 		
 		JLabel oppo_nickname = new JLabel();
 		oppo_nickname.setHorizontalAlignment(SwingConstants.CENTER);
-		oppo_nickname.setFont(new Font("µ¸¿ò", Font.BOLD, 17));
+		oppo_nickname.setFont(new Font("2D Coding", Font.BOLD, 17));
 		oppo_nickname.setBounds(800, 380, 350, 20);
 		add(oppo_nickname);
 		
@@ -88,11 +88,11 @@ public class CreatedRoom extends JLayeredPane {
 		MyButton startBtn = new MyButton(825, 500, "Game Start", e -> {
 			server.send((byte) 3);
 			if(comboBox.getSelectedIndex() == 0)
-				multi = new MyTime(frame, server.socketChannel);
+				multi = new MyTime(frame, server.socketChannel, null);
 			if(comboBox.getSelectedIndex() == 1)
-				multi = new MyInfinity(frame, server.socketChannel);
+				multi = new MyInfinity(frame, server.socketChannel, null);
 			if(comboBox.getSelectedIndex() == 2)
-				multi = new MyReload(frame, server.socketChannel);
+				multi = new MyReload(frame, server.socketChannel, null);
 		});
 		startBtn.setEnabled(false);
 		add(startBtn);

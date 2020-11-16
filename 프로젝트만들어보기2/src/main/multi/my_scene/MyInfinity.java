@@ -10,6 +10,7 @@ import java.nio.channels.SocketChannel;
 import main.MainFrame;
 import main.common.Plate;
 import main.multi.AlertDialog;
+import main.multi.oppo_scene.MultiOppoGame;
 import main.resource.Audios;
 
 public class MyInfinity extends MultiMyGame {
@@ -24,8 +25,8 @@ public class MyInfinity extends MultiMyGame {
 	int minu = 0;
 	int i = 0;
 	
-	public MyInfinity(MainFrame frame, SocketChannel socketChannel) {
-		super(frame, socketChannel);
+	public MyInfinity(MainFrame frame, SocketChannel socketChannel, MultiOppoGame oppo) {
+		super(frame, socketChannel, oppo);
 		score = 10;
 		game_time.setSize(200, 50);
 		
