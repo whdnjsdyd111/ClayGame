@@ -55,30 +55,30 @@ public abstract class MultiMyGame extends Dialog implements GameScene, MouseShap
 		game_time.setFont(new Font("Consolas", Font.BOLD, 40));
 		add(game_time);
 		
-		game_score = new JLabel("Score " + score);
+		game_score = new JLabel("Score " + score);	// 게임 스코어 라벨
 		game_score.setBounds(500, 50, 200, 50);
 		game_score.setFont(new Font("Consolas", Font.BOLD, 40));
 		add(game_score);
 		
-		claies = Collections.synchronizedSet(new HashSet<Plate>());
+		claies = Collections.synchronizedSet(new HashSet<Plate>());	// 해쉬셋 초기화
 		
-		setMouseShape(this);
+		setMouseShape(this);	// 마우스 조준 추가
 		
-		to_room = new MyButton(300, 400, "Into Room", null);
+		to_room = new MyButton(300, 400, "Into Room", null);	// 방으로 돌아가는 버튼 추가
 		add(to_room);
-		hideMenu();
+		hideMenu();	// 모두 추가한 후 처음에 숨겨두기
 	}
 	
 	abstract public void endGame();
 	
 	@Override
-	public void hideMenu() {
+	public void hideMenu() {	// 방으로 가는 버튼 숨겨두고 커서 숨기는 메소드
 		to_room.setVisible(false);
 		frame.setCursor(frame.blankCursor);
 	}
 	
 	@Override
-	public void showMenu() {
+	public void showMenu() {	// 게임이 끝나고 다시 네뉴들을 보여주는 메소드
 		to_room.setVisible(true);
 		to_room.addActionListener(e -> {
 			dispose();
@@ -87,7 +87,7 @@ public abstract class MultiMyGame extends Dialog implements GameScene, MouseShap
 		frame.setCursor(Cursor.getDefaultCursor());
 	}
 	
-	protected void sendMousePoint(int x, int y) {
+	protected void sendMousePoint(int x, int y) {	// 플레이어아 마우스를 눌렀을 때 상대방에게 마우스 포인터 보내기
 		try {
 			IntBuffer intBuffer = IntBuffer.wrap(new int[] { x, y, 0 });
 			ByteBuffer byteBuffer = ByteBuffer.allocate(intBuffer.capacity() * 4);
@@ -97,12 +97,12 @@ public abstract class MultiMyGame extends Dialog implements GameScene, MouseShap
 			byteBuffer.flip();
 			socketChannel.write(byteBuffer);
 			
-			System.out.println("[마우스 포인터 전송]");
+			// System.out.println("[마우스 포인터 전송]");
 		} catch (Exception e) {
 			e.printStackTrace();
 			try {
-				System.out.println("[상대방과 통신 두절 : " + socketChannel.getRemoteAddress() + 
-						" : " + Thread.currentThread().getName() + "]");				
+				// System.out.println("[상대방과 통신 두절 : " + socketChannel.getRemoteAddress() + 
+				// 		" : " + Thread.currentThread().getName() + "]");				
 				socketChannel.close();
 			} catch (Exception e2) {
 				e2.printStackTrace();
@@ -114,7 +114,7 @@ public abstract class MultiMyGame extends Dialog implements GameScene, MouseShap
 		}
 	}
 	
-	protected void sendClayPoint(int height, int x) {
+	protected void sendClayPoint(int height, int x) {	// 플레이트가 생성되었을 때 해당 좌표를 보내기
 		try {
 			IntBuffer intBuffer = IntBuffer.wrap(new int[] { height, x });
 			ByteBuffer byteBuffer = ByteBuffer.allocate(intBuffer.capacity() * 4);
@@ -124,12 +124,12 @@ public abstract class MultiMyGame extends Dialog implements GameScene, MouseShap
 			byteBuffer.flip();
 			socketChannel.write(byteBuffer);
 			
-			System.out.println("[플레이트 높이 전송]");
+			// System.out.println("[플레이트 높이 전송]");
 		} catch (Exception e) {
 			e.printStackTrace();
 			try {
-				System.out.println("[상대방과 통신 두절 : " + socketChannel.getRemoteAddress() + 
-						" : " + Thread.currentThread().getName() + "]");				
+				// System.out.println("[상대방과 통신 두절 : " + socketChannel.getRemoteAddress() + 
+				// 		" : " + Thread.currentThread().getName() + "]");				
 				socketChannel.close();
 			} catch (Exception e2) {
 				e2.printStackTrace();

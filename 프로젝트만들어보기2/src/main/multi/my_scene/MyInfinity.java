@@ -175,7 +175,7 @@ public class MyInfinity extends MultiMyGame {
 	}
 	
 	@Override
-	public void endGame() {
+	public void endGame() {	// 게임이 끝났을 경우 상대방에게 시간 점수를 보내기
 		try {
 			IntBuffer intBuffer = IntBuffer.wrap(new int[] { -1, i });
 			ByteBuffer byteBuffer = ByteBuffer.allocate(intBuffer.capacity() * 4);
@@ -185,12 +185,12 @@ public class MyInfinity extends MultiMyGame {
 			byteBuffer.flip();
 			socketChannel.write(byteBuffer);
 			
-			System.out.println("[게임 끝남 전송, 무한 모드 점수 전송]");
+			// System.out.println("[게임 끝남 전송, 무한 모드 점수 전송]");
 		} catch (Exception e) {
 			e.printStackTrace();
 			try {
-				System.out.println("[상대방과 통신 두절 : " + socketChannel.getRemoteAddress() + 
-						" : " + Thread.currentThread().getName() + "]");				
+				// System.out.println("[상대방과 통신 두절 : " + socketChannel.getRemoteAddress() + 
+				// 		" : " + Thread.currentThread().getName() + "]");				
 				socketChannel.close();
 			} catch (Exception e2) {
 				e2.printStackTrace();

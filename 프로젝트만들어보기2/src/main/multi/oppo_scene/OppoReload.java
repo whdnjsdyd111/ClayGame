@@ -5,8 +5,8 @@ import java.awt.Font;
 import javax.swing.JLabel;
 
 import main.MainFrame;
+import main.common.Bullet;
 import main.common.Plate;
-import main.single.Bullet;
 
 public class OppoReload extends MultiOppoGame {
 	

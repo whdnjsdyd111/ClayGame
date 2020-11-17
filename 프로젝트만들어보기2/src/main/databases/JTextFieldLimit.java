@@ -12,7 +12,7 @@ public class JTextFieldLimit extends PlainDocument {
 	
 	private int limit;
 	
-	public JTextFieldLimit(int limit) {
+	public JTextFieldLimit(int limit) {	// 텍스트 입력 수 제한
 		super();
 		this.limit = limit;
 	}
@@ -22,7 +22,7 @@ public class JTextFieldLimit extends PlainDocument {
 		if(str == null)
 			return;
 		
-		if(getLength() + str.length() <= limit)
+		if(getLength() + str.length() <= limit)	// 제한 수가 넘어가더라도 원래 글자만 지정되도록 설정
 			super.insertString(offset, str, attr);
 	}
 }

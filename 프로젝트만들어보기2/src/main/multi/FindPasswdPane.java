@@ -24,36 +24,36 @@ public class FindPasswdPane extends JLayeredPane {
 		this.frame = frame;
 		setLayout(null);
 		
-		JLabel reg_label = new JLabel("Change Password");
+		JLabel reg_label = new JLabel("Change Password");	// 비밀번호 바꾸기 라벨
 		reg_label.setFont(new Font("Consolas", Font.BOLD, 45));
 		reg_label.setBounds(425, 100, 375, 60);
 		add(reg_label);
 		
-		MyTextField tf_id = new MyTextField(450, 200);
+		MyTextField tf_id = new MyTextField(450, 200);	// id 입력란
 		add(tf_id);
 
-		MyTextField tf_pw = new MyTextField(450, 300);
+		MyTextField tf_pw = new MyTextField(450, 300);	// 패스워드 입력란
 		add(tf_pw);
 		
-		MyTextField tf_re_pw = new MyTextField(450, 400);
+		MyTextField tf_re_pw = new MyTextField(450, 400);	// 패스워드 재입력란
 		add(tf_re_pw);
 		
-		JLabel id_label = new JLabel("ID");
+		JLabel id_label = new JLabel("ID");		// ID 라벨
 		id_label.setFont(new Font("Consolas", Font.PLAIN, 35));
 		id_label.setBounds(250, 200, 150, 50);
 		add(id_label);
 		
-		JLabel nick_label = new JLabel("PW ");
+		JLabel nick_label = new JLabel("PW ");	// PW 라벨
 		nick_label.setFont(new Font("Consolas", Font.PLAIN, 35));
 		nick_label.setBounds(250, 300, 199, 50);
 		add(nick_label);
 		
-		JLabel pw_label = new JLabel("Re-PW");
+		JLabel pw_label = new JLabel("Re-PW");	// 재입력 PW 라벨
 		pw_label.setFont(new Font("Consolas", Font.PLAIN, 35));
 		pw_label.setBounds(250, 400, 186, 50);
 		add(pw_label);
 		
-		MyButton regBtn = new MyButton(650, 550, "Change Password", e -> {
+		MyButton regBtn = new MyButton(650, 550, "Change Password", e -> {	// 비밀번호 바꾸는 버튼
 			if(tf_id.getText().equals("") || tf_re_pw.getText().equals("") || tf_pw.getText().equals("")) {
 				new AlertDialog(frame, AlertDialog.MSG_EMPTY);
 				return;
@@ -69,7 +69,7 @@ public class FindPasswdPane extends JLayeredPane {
 			}
 			
 			
-			if(!Pattern.matches("^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}$", pw)) {
+			if(!Pattern.compile("^(?=.*[A-Za-z])(?=.*[0-9])(?=.*[$@$!%*#?&])[A-Za-z[0-9]$@$!%*#?&]{8,}$").matcher(pw).matches()) {
 				new AlertDialog(frame, AlertDialog.MSG_PW);
 				return;
 			}
@@ -85,7 +85,7 @@ public class FindPasswdPane extends JLayeredPane {
 		});
 		add(regBtn);
 		
-		MyButton back_btn = new MyButton(250, 550, "Back", e -> {
+		MyButton back_btn = new MyButton(250, 550, "Back", e -> {	// 뒤로가는 버튼
 			frame.card.show(frame.getContentPane(), "multiLogin");
 		});
 		add(back_btn);

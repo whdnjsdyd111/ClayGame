@@ -27,30 +27,30 @@ public class SingleGamePane extends JLayeredPane implements MouseShape {
 		game_title.setFont(new Font("Consolas", Font.BOLD, 40));
 		add(game_title);
 		
-		MyButton infinity = new MyButton(100, 250, "Infinity Mode", e -> {
+		MyButton infinity = new MyButton(100, 250, "Infinity Mode", e -> {	// 무한 모드를 시작하는 버튼
 			frame.card.show(frame.getContentPane(), "infinity");
 			frame.infinityMode.startGame();
 		});
 		add(infinity);
 		
-		MyButton time = new MyButton(450, 250, "Time Mode", e -> {
+		MyButton time = new MyButton(450, 250, "Time Mode", e -> {	// 시간 제한 모드를 시작하는 버튼
 			frame.card.show(frame.getContentPane(), "time");
 			frame.time.startGame();
 		});
 		add(time);
 		
-		MyButton reload = new MyButton(800, 250, "Reload Mode", e -> {
+		MyButton reload = new MyButton(800, 250, "Reload Mode", e -> {	// 장전 모드를 시작하는 버튼
 			frame.card.show(frame.getContentPane(), "reload");
 			frame.reload.startGame();
 		});
 		add(reload);
 		
-		MyButton to_main = new MyButton(275, 480, "Main", e -> {
+		MyButton to_main = new MyButton(275, 480, "Main", e -> {	// 메인 화면으로 가는 버튼
 			frame.card.show(frame.getContentPane(), "main");
 		});
 		add(to_main);
 		
-		MyButton end = new MyButton(625, 480, "End", e -> {
+		MyButton end = new MyButton(625, 480, "End", e -> {		// 게임을 끝내는 버튼
 			frame.dispose();
 		});
 		add(end);

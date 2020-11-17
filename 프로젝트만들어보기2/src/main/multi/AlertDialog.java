@@ -13,6 +13,8 @@ import main.common.MyButton;
 
 public class AlertDialog extends Dialog {
 	
+	// 경고창 다이알로그
+	
 	/**
 	 * 
 	 */
@@ -42,13 +44,13 @@ public class AlertDialog extends Dialog {
 		
 		this.setLocation((screenSize.width - frameSize.width)/2, (screenSize.height - frameSize.height)/2); // 화면 중앙
 		
-		JLabel msgLabel = new JLabel(msg);
+		JLabel msgLabel = new JLabel(msg);	// 메시지 라벨 초기화
 		msgLabel.setFont(new Font("돋움", Font.BOLD, 15));
 		msgLabel.setBounds(10, 100, 430, 50);
 		msgLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		add(msgLabel);
 		
-		MyButton btn = new MyButton(75, 275, "OK", e -> {
+		MyButton btn = new MyButton(75, 275, "OK", e -> {	// 경고창 끄는 버튼
 			dispose();
 		});
 		add(btn);

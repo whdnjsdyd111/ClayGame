@@ -28,7 +28,7 @@ public class ReloadDAO {
 		return conn;
 	}
 	
-	public String[][] getReload(String score, int[] my_index) {
+	public String[][] getReload(String score, int[] my_index) {		// 재장전 모드의 랭킹을 가져오는 메소드
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -98,7 +98,7 @@ public class ReloadDAO {
 		return str;
 	}
 	
-	public void insert(String name, String score) {
+	public void insert(String name, String score) {	// 랭킹 등록 메소드
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		

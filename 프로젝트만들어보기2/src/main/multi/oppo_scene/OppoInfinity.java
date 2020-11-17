@@ -90,7 +90,7 @@ public class OppoInfinity extends MultiOppoGame {
 	
 	@Override
 	public void endGame(int score) {
-		System.out.println("상대방 시간 점수 : " + score);
+		// System.out.println("상대방 시간 점수 : " + score);
 		int sec = score / 100;
 		int minu = sec / 60;
 		int mili = score % 100;

@@ -163,12 +163,12 @@ public class MyTime extends MultiMyGame {
 			byteBuffer.flip();
 			socketChannel.write(byteBuffer);
 			
-			System.out.println("[게임 끝남 전송, 시간 제한 모드 점수 전송]");
+			// System.out.println("[게임 끝남 전송, 시간 제한 모드 점수 전송]");
 		} catch (Exception e) {
 			e.printStackTrace();
 			try {
-				System.out.println("[상대방과 통신 두절 : " + socketChannel.getRemoteAddress() + 
-						" : " + Thread.currentThread().getName() + "]");				
+				// System.out.println("[상대방과 통신 두절 : " + socketChannel.getRemoteAddress() + 
+				// 		" : " + Thread.currentThread().getName() + "]");				
 				socketChannel.close();
 			} catch (Exception e2) {
 				e2.printStackTrace();

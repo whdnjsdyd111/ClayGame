@@ -18,7 +18,7 @@ public class MyButton extends JButton {
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	public static final String COLOR_HEX[][] = {
+	public static final String COLOR_HEX[][] = {			// 버튼 색을 랜덤으로 지정하기 위해 각각의 hex를 미리 둠
 			{"#00BFF", "#0AC9FF", "#14D3FF"},	// 밝은 하늘
 			{"#96A5FF", "#A0AFFF", "#AAB9FF"},	// 매우 연한 남색
 			{"#7B68EE", "#8572EE", "#8F7CEE"},	// 연한 남색
@@ -35,46 +35,32 @@ public class MyButton extends JButton {
 			{"#505050", "#5A5A5A", "#646464"}	// 진 회색
 	};
 
-//	private final int BRIGHT_SKY = 0;
-//	private final int VERY_LIGHT_INDIGO = 1;
-//	private final int LIGHT_INDIGO = 2;
-//	private final int VERY_LIGHT_GREEN = 3;
-//	private final int LIGHT_GREEN = 4;
-//	private final int LIGHT_SKY = 5;
-//	private final int GREEN = 6;
-//	private final int SKIN = 7;
-//	private final int PINK = 8;
-//	private final int SCARLET = 9;
-//	private final int LIGHT_YELLOW = 10;
-//	private final int RED = 11;
-//	private final int LIGHT_GRAY = 12;
-//	private final int DARK_GRAY = 13;
-	
 	public MyButton(int x, int y, String name, ActionListener i) {
-		setText(name);
-		setSize(300, 60);
-		setLocation(x, y);
-		setFont(new Font("D2 Coding", Font.BOLD, 30));
-		addActionListener(i);
+		setText(name);		// 버튼 이름 지정
+		setSize(300, 60);	// 사이즈 300, 60
+		setLocation(x, y);	// 버튼 위치 지정
+		setFont(new Font("D2 Coding", Font.BOLD, 30));	// 폰트 지정
+		addActionListener(i);	// 매개 변수로 받은 액션 리스너 등록하기
 	}
 
-	protected void paintComponent(Graphics g) {
-		int width = getWidth();
+	protected void paintComponent(Graphics g) {	// 버튼을 꾸미기 위해 페인트컴포넌트
+		int width = getWidth();		// 가로 세로 길이 얻기
 		int height = getHeight();
 		
-		Graphics2D graphics = (Graphics2D) g;
-		graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		Graphics2D graphics = (Graphics2D) g;	// 2D 그래픽 얻기
+		graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);	// 외각선이 부드럽게 지정하기
 
-		if (getModel().isArmed()) {
+		if (getModel().isArmed()) {		// 해당 버튼에 hover되었을 때, 마우스를 눌렀을 때, 아닐때에 색깔을 랜덤으로 지정하기
 			graphics.setColor(Color.decode(RandomColor()));
 		} else if (getModel().isRollover()) {
 			graphics.setColor(Color.decode(RandomColor()));
 		} else {
 			graphics.setColor(Color.decode(RandomColor()));
 		}
-		graphics.fillRoundRect(0, 0, width, height, 10, 10);
+		
+		graphics.fillRoundRect(0, 0, width, height, 10, 10);	// 해당 그래픽으로 fillRect로 네모 가득채워 그리기
 
-		FontMetrics fontMetrics = graphics.getFontMetrics();
+		FontMetrics fontMetrics = graphics.getFontMetrics();	// 지정된 폰트의 그래픽 얻기
 
 		Rectangle stringBounds = fontMetrics.getStringBounds(this.getText(), graphics).getBounds();
 		int textX = (width - stringBounds.width) / 2;
@@ -83,11 +69,11 @@ public class MyButton extends JButton {
 		graphics.setColor(getForeground());
 		graphics.setFont(getFont());
 		graphics.drawString(getText(), textX, textY);
-		graphics.dispose();
+		graphics.dispose();		// 그래픽 그리고 텍스트의 네모난 렉트 없애기
 		super.paintComponent(g);
 	}
 
-	private String RandomColor() {
+	private String RandomColor() {	// 색깔 랜덤으로 얻는 메소드
 		return COLOR_HEX[(int) (Math.random() * 14)][(int) (Math.random() * 3)];
 	}
 }

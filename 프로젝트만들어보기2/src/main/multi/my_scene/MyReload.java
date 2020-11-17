@@ -13,11 +13,11 @@ import java.nio.channels.SocketChannel;
 import javax.swing.JLabel;
 
 import main.MainFrame;
+import main.common.Bullet;
 import main.common.Plate;
 import main.multi.AlertDialog;
 import main.multi.oppo_scene.MultiOppoGame;
 import main.resource.Audios;
-import main.single.Bullet;
 
 public class MyReload extends MultiMyGame {
 	
@@ -250,12 +250,12 @@ public class MyReload extends MultiMyGame {
 			byteBuffer.flip();
 			socketChannel.write(byteBuffer);
 			
-			System.out.println("[게임 끝남 전송, 시간 제한 모드 점수 전송]");
+			// System.out.println("[게임 끝남 전송, 시간 제한 모드 점수 전송]");
 		} catch (Exception e) {
 			e.printStackTrace();
 			try {
-				System.out.println("[상대방과 통신 두절 : " + socketChannel.getRemoteAddress() + 
-						" : " + Thread.currentThread().getName() + "]");				
+				// System.out.println("[상대방과 통신 두절 : " + socketChannel.getRemoteAddress() + 
+				// 		" : " + Thread.currentThread().getName() + "]");				
 				socketChannel.close();
 			} catch (Exception e2) {
 				e2.printStackTrace();
@@ -267,7 +267,7 @@ public class MyReload extends MultiMyGame {
 		}
 	}
 	
-	private void sendReload() {
+	private void sendReload() {	// 플레이어가 장전하면 상대방에게도 보여주기 위해 장전 메소드 실행
 		try {
 			IntBuffer intBuffer = IntBuffer.wrap(new int[] { -2 });
 			ByteBuffer byteBuffer = ByteBuffer.allocate(intBuffer.capacity() * 4);
@@ -276,12 +276,12 @@ public class MyReload extends MultiMyGame {
 			byteBuffer.flip();
 			socketChannel.write(byteBuffer);
 			
-			System.out.println("[재장전 전송]");
+			// System.out.println("[재장전 전송]");
 		} catch (Exception e) {
 			e.printStackTrace();
 			try {
-				System.out.println("[상대방과 통신 두절 : " + socketChannel.getRemoteAddress() + 
-						" : " + Thread.currentThread().getName() + "]");				
+				// System.out.println("[상대방과 통신 두절 : " + socketChannel.getRemoteAddress() + 
+				// 		" : " + Thread.currentThread().getName() + "]");				
 				socketChannel.close();
 			} catch (Exception e2) {
 				e2.printStackTrace();

@@ -7,7 +7,6 @@ import java.nio.IntBuffer;
 import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
 import java.nio.charset.Charset;
-import java.util.Arrays;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -53,14 +52,14 @@ public class Server {
 		try {
 			serverSocketChannel = ServerSocketChannel.open();
 			serverSocketChannel.configureBlocking(true);	// 블로킹 방식 실행
-			serverSocketChannel.bind(new InetSocketAddress(PORT));
+			serverSocketChannel.bind(new InetSocketAddress(PORT));	// 서버 바인딩
 		} catch (Exception e) {
 			e.printStackTrace();
 			if(serverSocketChannel.isOpen()) stopServer();
 			return;
 		}
 		
-		startBtn.addActionListener(e -> {
+		startBtn.addActionListener(e -> {	// 시작을 하였을 때 시작하겠다는 것을 알리기 위해 상대방에게 byte 1 보내기
 			send((byte) -1);
 		});
 		
@@ -83,15 +82,15 @@ public class Server {
 				}
 			}
 			System.out.println("[연결 허용 멈춤]");
-			getNickname();
-			sendNickname();
-			startBtn.setEnabled(true);
-			send((byte) comboBox.getSelectedIndex());
-			receive();	// 연결 후 데이터 받기
+			getNickname();	// 상대방에게서 닉네임을 얻기
+			sendNickname();	// 닉네임 얻고 상대방에게 자신의 닉네임 보내기
+			startBtn.setEnabled(true);	// 스타트 버튼 활성화
+			send((byte) comboBox.getSelectedIndex());	// 현재 선택된 콤보 박스의 인덱스 보내기
+			receive();	// 연결 후 데이터(대화) 받기
 		}).start();
 	}
 	
-	public void stopServer() {
+	public void stopServer() {	// 서버 멈추는 메소드
 		try {
 			if(socketChannel != null && socketChannel.isOpen())
 				socketChannel.close();	// 소켓 채널 닫기
@@ -105,7 +104,7 @@ public class Server {
 		}
 	}
 	
-	private void receive() {
+	private void receive() {	// 데이터 받는 메소드
 		new Thread(() -> {
 			while(true) {
 				try {
@@ -125,6 +124,7 @@ public class Server {
 					
 					if(byteBuffer.get(0) == -1) {
 						// 게임 시작을 클라이언트에 알려 준후 클라이언트가 게임을 시작했다는 것을 받고 IntBuffer 시작
+						
 						if(comboBox.getSelectedIndex() == 0)
 							oppo_scene = new OppoTime(frame);
 						if(comboBox.getSelectedIndex() == 1)
@@ -168,7 +168,7 @@ public class Server {
 		}).start();
 	}
 	
-	public void send(String data) {
+	public void send(String data) {	// 대화 보내는 메소드
 		try {
 			if(socketChannel == null)
 				return;
@@ -177,12 +177,12 @@ public class Server {
 			ByteBuffer byteBuffer = charset.encode(data);
 			socketChannel.write(byteBuffer);
 			
-			System.out.println("[보내기 완료]");
+			// System.out.println("[보내기 완료]");
 		} catch (Exception e) {
 			e.printStackTrace();
 			try {
-				System.out.println("[상대방과 통신 두절 : " + socketChannel.getRemoteAddress() + 
-						" : " + Thread.currentThread().getName() + "]");				
+				// System.out.println("[상대방과 통신 두절 : " + socketChannel.getRemoteAddress() + 
+				// 		" : " + Thread.currentThread().getName() + "]");				
 				socketChannel.close();
 				connect();
 			} catch (Exception e2) {
@@ -192,7 +192,7 @@ public class Server {
 		}
 	}
 	
-	public void send(byte data) {
+	public void send(byte data) {	// 게임 종류 보내는 메소드
 		try {
 			if(socketChannel == null)
 				return;
@@ -200,13 +200,13 @@ public class Server {
 			ByteBuffer byteBuffer = ByteBuffer.wrap(new byte[] { data });
 			socketChannel.write(byteBuffer);
 			
-			System.out.println("[게임 종류 보내기 완료]");
+			// System.out.println("[게임 종류 보내기 완료]");
 			
 		} catch (Exception e) {
 			e.printStackTrace();
 			try {
-				System.out.println("[상대방과 통신 두절 : " + socketChannel.getRemoteAddress() + 
-						" : " + Thread.currentThread().getName() + "]");				
+				// System.out.println("[상대방과 통신 두절 : " + socketChannel.getRemoteAddress() + 
+				// 		" : " + Thread.currentThread().getName() + "]");				
 				socketChannel.close();
 				connect();
 			} catch (Exception e2) {
@@ -216,7 +216,7 @@ public class Server {
 		}
 	}
 	
-	private void getNickname() {
+	private void getNickname() {	// 닉네임 받는 메소드
 		while(true) {
 			try {
 				ByteBuffer byteBuffer = ByteBuffer.allocate(100);
@@ -228,22 +228,22 @@ public class Server {
 				if(readByteCount == -1)
 					throw new IOException();
 				
-				System.out.println("[요청 처리 : " + socketChannel.getRemoteAddress() + 
-						" : " + Thread.currentThread().getName() + "]");
+				// System.out.println("[요청 처리 : " + socketChannel.getRemoteAddress() + 
+				// 		" : " + Thread.currentThread().getName() + "]");
 				
 				byteBuffer.flip();	// 문자열로 변환
 				Charset charset = Charset.forName("UTF-8");
 				String data = charset.decode(byteBuffer).toString();
 				
-				System.out.println("[상대방 닉네임 받음]");
+				// System.out.println("[상대방 닉네임 받음]");
 				oppo_nickname.setText(data);
 				textArea.setText(textArea.getText() + "\n" + data + "님이 입장하셨습니다.");
 				break;
 			} catch (Exception e2) {
 				e2.printStackTrace();
 				try {
-					System.out.println("[상대방과 통신 두절 : " + socketChannel.getRemoteAddress() + 
-							" : " + Thread.currentThread().getName() + "]");						
+					// System.out.println("[상대방과 통신 두절 : " + socketChannel.getRemoteAddress() + 
+					// 		" : " + Thread.currentThread().getName() + "]");						
 					socketChannel.close();
 					connect();
 				} catch (Exception e3) {
@@ -256,18 +256,18 @@ public class Server {
 		}
 	}
 	
-	private void sendNickname() {
+	private void sendNickname() {	// 닉네임 보내는 메소드
 		try {
 			Charset charset = Charset.forName("UTF-8");
 			ByteBuffer byteBuffer = charset.encode(nickname);
 			socketChannel.write(byteBuffer);
 			
-			System.out.println("[닉네임 보내기 완료]");
+			// System.out.println("[닉네임 보내기 완료]");
 		} catch (Exception e) {
 			e.printStackTrace();
 			try {
-				System.out.println("[상대방과 통신 두절 : " + socketChannel.getRemoteAddress() + 
-						" : " + Thread.currentThread().getName() + "]");				
+				// System.out.println("[상대방과 통신 두절 : " + socketChannel.getRemoteAddress() + 
+				// 		" : " + Thread.currentThread().getName() + "]");				
 				socketChannel.close();
 				connect();
 			} catch (Exception e2) {
@@ -277,14 +277,14 @@ public class Server {
 		}
 	}
 	
-	private void oppout() {
+	private void oppout() {	// 상대방 나갔을 시 알려주는 메소드
 		textArea.setText(textArea.getText() + "\n" + oppo_nickname.getText() + "님이 나가셨습니다.");
 		oppo_nickname.setText("");
 		startBtn.setEnabled(false);
 	}
 	
-	private void receiveGameInfo() {
-		System.out.println("[게임 정보 받기 시작]");
+	private void receiveGameInfo() {	// 게임 정보를 받는 메소드
+		// System.out.println("[게임 정보 받기 시작]");
 		
 		new Thread(() -> {
 			while(true) {
@@ -302,8 +302,8 @@ public class Server {
 					IntBuffer intBuffer = byteBuffer.asIntBuffer();
 					int[] data = new int[intBuffer.capacity()];
 					intBuffer.get(data);
-					System.out.println("서버 데이터 받음");
-					System.out.println(Arrays.toString(data));
+					// System.out.println("서버 데이터 받음");
+					
 					if(data[0] == -1) {
 						oppo_scene.endGame(data[1]);
 						break;
@@ -318,8 +318,8 @@ public class Server {
 				} catch (Exception e) {
 					e.printStackTrace();
 					try {
-						System.out.println("[상대방과 통신 두절 : " + socketChannel.getRemoteAddress() + 
-								" : " + Thread.currentThread().getName() + "]");						
+						// System.out.println("[상대방과 통신 두절 : " + socketChannel.getRemoteAddress() + 
+						// 		" : " + Thread.currentThread().getName() + "]");						
 						socketChannel.close();
 						connect();
 					} catch (Exception e2) {
