@@ -114,6 +114,7 @@ public class ReloadMode extends InGame {
 			
 			for (round = 1; round <= 10; round++) {		// 10번의 라운드를 실행
 				repaint();	// 라운드 시작할 때 리페인트 하기
+				System.gc();	// 가비지 객체로 메모리 청소
 				claies_group = new ThreadGroup("clay group");	// 라운드 시작할 때 새롭게 쓰레드 그룹 초기화
 				claies_group.setDaemon(true);
 				

@@ -21,6 +21,7 @@ import main.common.Plate;
 
 public abstract class InGame extends JLayeredPane implements GameScene, MouseShape {
 	// 싱글 게임의 공통된 개념들을 모은 추상 클래스, GameScene과 MouseShape 인터페이스를 구현
+	
 	/**
 	 * 
 	 */

@@ -116,8 +116,7 @@ public class MyInfinity extends MultiMyGame {
 							try {
 								Thread.sleep(1);
 							} catch (InterruptedException e) {
-								claies.remove(plate);
-								remove(plate);
+								start_infinity.interrupt();
 							}
 						}
 					} else {
@@ -126,8 +125,7 @@ public class MyInfinity extends MultiMyGame {
 							try {
 								Thread.sleep(1);
 							} catch (InterruptedException e) {
-								claies.remove(plate);
-								remove(plate);
+								start_infinity.interrupt();
 							}
 						}
 					}
@@ -167,8 +165,6 @@ public class MyInfinity extends MultiMyGame {
 	}
 	
 	private void stopInfinity() {
-		claies_group.interrupt();
-		
 		endGame();
 		repaint();
 		showMenu();

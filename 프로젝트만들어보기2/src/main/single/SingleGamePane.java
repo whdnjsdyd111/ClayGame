@@ -7,9 +7,8 @@ import javax.swing.JLayeredPane;
 
 import main.MainFrame;
 import main.common.MyButton;
-import main.common.MouseShape;
 
-public class SingleGamePane extends JLayeredPane implements MouseShape {
+public class SingleGamePane extends JLayeredPane {
 	
 	/**
 	 * 

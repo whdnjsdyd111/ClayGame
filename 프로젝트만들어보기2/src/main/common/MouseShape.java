@@ -48,8 +48,4 @@ public interface MouseShape {
 		cont.setCursor(cursor);
 	}
 	 */
-	
-	default void setPlayer(Container cont) {
-		
-	}
 }

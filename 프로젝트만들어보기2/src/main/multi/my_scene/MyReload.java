@@ -53,6 +53,7 @@ public class MyReload extends MultiMyGame {
 	};
 	
 	Thread reload = new Thread(reload_run);
+	Thread round_create = null;
 	
 	public MyReload(MainFrame frame, SocketChannel socketChannel, MultiOppoGame oppo) {
 		super(frame, socketChannel, oppo);
@@ -153,7 +154,7 @@ public class MyReload extends MultiMyGame {
 				}
 				round_label.setVisible(false);
 				
-				Thread round_create =  new Thread(create_clay = () -> {
+				round_create =  new Thread(create_clay = () -> {
 					
 					while(true) {
 						try {
@@ -184,8 +185,7 @@ public class MyReload extends MultiMyGame {
 									try {
 										Thread.sleep(1);
 									} catch (InterruptedException e) {
-										claies.remove(plate);
-										remove(plate);
+										round_create.interrupt();
 									}
 								}
 							} else {
@@ -194,8 +194,7 @@ public class MyReload extends MultiMyGame {
 									try {
 										Thread.sleep(1);
 									} catch (InterruptedException e) {
-										claies.remove(plate);
-										remove(plate);
+										round_create.interrupt();
 									}
 								}
 							}
